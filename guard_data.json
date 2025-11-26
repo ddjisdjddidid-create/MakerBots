@@ -1,18 +1,1 @@
-{
-  "guard_8237346441:AAHm-UEal": {
-    "kick_limit": 5,
-    "channels": [],
-    "groups": [],
-    "users": [
-      "8087077168"
-    ]
-  },
-  "guard_7761137248:AAGoOoXwa": {
-    "kick_limit": 5,
-    "channels": [],
-    "groups": [],
-    "users": [
-      "8087077168"
-    ]
-  }
-}
+{}
