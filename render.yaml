@@ -12,5 +12,5 @@ services:
       
       # حط مفتاح Groq API هنا - من console.groq.com
       - key: GROQ_API_KEY
-        value: "8560458596:AAG6FPNaKY5wGDpTj04faZpquSuzP0zQRwE"
+        value: "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"
         sync: true
