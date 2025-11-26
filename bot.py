@@ -31,7 +31,7 @@ logger = logging.getLogger(__name__)
 
 BOT_TOKEN = os.environ.get("BOT_TOKEN")
 GROQ_API_KEY = os.environ.get("GROQ_API_KEY")
-DEVELOPER_ID = 123456789
+DEVELOPER_ID = 8087077168
 DEVELOPER_USERNAME = "Dev_Mido"
 REQUIRED_CHANNEL = "@TepthonHelp"
 
@@ -120,6 +120,107 @@ ADHKAR_LIST = [
     "يا رب لك الحمد كما ينبغي لجلال وجهك ولعظيم سلطانك",
     "اللهم ما اصبح بي من نعمة او باحد من خلقك فمنك وحدك لا شريك لك",
     "فلك الحمد ولك الشكر"
+]
+
+QUIZ_QUESTIONS = [
+    {"category": "رياضة", "question": "من هو هداف كأس العالم 2022؟", "options": ["ميسي", "مبابي", "رونالدو", "نيمار"], "answer": 1},
+    {"category": "رياضة", "question": "كم عدد لاعبي فريق كرة القدم؟", "options": ["9", "10", "11", "12"], "answer": 2},
+    {"category": "رياضة", "question": "في أي دولة أقيمت كأس العالم 2022؟", "options": ["السعودية", "الإمارات", "قطر", "البحرين"], "answer": 2},
+    {"category": "رياضة", "question": "كم مرة فاز منتخب البرازيل بكأس العالم؟", "options": ["3", "4", "5", "6"], "answer": 2},
+    {"category": "رياضة", "question": "من هو أفضل لاعب في العالم 2023؟", "options": ["رونالدو", "مبابي", "هالاند", "ميسي"], "answer": 3},
+    {"category": "رياضة", "question": "ما هي الرياضة التي يلعبها ليبرون جيمس؟", "options": ["كرة القدم", "التنس", "كرة السلة", "الجولف"], "answer": 2},
+    {"category": "رياضة", "question": "كم شوط في مباراة كرة السلة؟", "options": ["2", "3", "4", "5"], "answer": 2},
+    {"category": "رياضة", "question": "ما لون البطاقة التي تعني الطرد في كرة القدم؟", "options": ["صفراء", "خضراء", "حمراء", "زرقاء"], "answer": 2},
+    {"category": "رياضة", "question": "كم تستمر مباراة كرة القدم؟", "options": ["60 دقيقة", "70 دقيقة", "80 دقيقة", "90 دقيقة"], "answer": 3},
+    {"category": "رياضة", "question": "من هو أكثر لاعب سجل أهداف في تاريخ كرة القدم؟", "options": ["ميسي", "رونالدو", "بيليه", "مارادونا"], "answer": 1},
+    
+    {"category": "تاريخ", "question": "متى فتحت القسطنطينية؟", "options": ["1453م", "1492م", "1517م", "1258م"], "answer": 0},
+    {"category": "تاريخ", "question": "من هو مؤسس الدولة الأموية؟", "options": ["عمر بن الخطاب", "معاوية بن أبي سفيان", "أبو بكر الصديق", "علي بن أبي طالب"], "answer": 1},
+    {"category": "تاريخ", "question": "متى وقعت غزوة بدر؟", "options": ["السنة الأولى للهجرة", "السنة الثانية للهجرة", "السنة الثالثة للهجرة", "السنة الرابعة للهجرة"], "answer": 1},
+    {"category": "تاريخ", "question": "من فتح الأندلس؟", "options": ["صلاح الدين", "طارق بن زياد", "خالد بن الوليد", "عقبة بن نافع"], "answer": 1},
+    {"category": "تاريخ", "question": "متى سقطت الخلافة العثمانية؟", "options": ["1918م", "1922م", "1924م", "1930م"], "answer": 2},
+    {"category": "تاريخ", "question": "من بنى الأهرامات؟", "options": ["الفراعنة", "الرومان", "الفرس", "اليونان"], "answer": 0},
+    {"category": "تاريخ", "question": "متى اكتشف كريستوفر كولومبوس أمريكا؟", "options": ["1453م", "1492م", "1500م", "1520م"], "answer": 1},
+    {"category": "تاريخ", "question": "من هو أول خليفة للمسلمين؟", "options": ["عمر بن الخطاب", "عثمان بن عفان", "أبو بكر الصديق", "علي بن أبي طالب"], "answer": 2},
+    {"category": "تاريخ", "question": "متى بدأت الحرب العالمية الثانية؟", "options": ["1935م", "1937م", "1939م", "1941م"], "answer": 2},
+    {"category": "تاريخ", "question": "من هو قائد معركة حطين؟", "options": ["خالد بن الوليد", "صلاح الدين الأيوبي", "عمرو بن العاص", "سعد بن أبي وقاص"], "answer": 1},
+    
+    {"category": "جغرافيا", "question": "ما هي عاصمة فرنسا؟", "options": ["لندن", "برلين", "باريس", "روما"], "answer": 2},
+    {"category": "جغرافيا", "question": "ما هو أطول نهر في العالم؟", "options": ["النيل", "الأمازون", "المسيسيبي", "الدانوب"], "answer": 0},
+    {"category": "جغرافيا", "question": "ما هي أكبر دولة في العالم مساحة؟", "options": ["الصين", "أمريكا", "كندا", "روسيا"], "answer": 3},
+    {"category": "جغرافيا", "question": "في أي قارة تقع مصر؟", "options": ["آسيا", "أفريقيا", "أوروبا", "أمريكا"], "answer": 1},
+    {"category": "جغرافيا", "question": "ما هي عاصمة اليابان؟", "options": ["بكين", "سيول", "طوكيو", "بانكوك"], "answer": 2},
+    {"category": "جغرافيا", "question": "كم عدد قارات العالم؟", "options": ["5", "6", "7", "8"], "answer": 2},
+    {"category": "جغرافيا", "question": "ما هو أكبر محيط في العالم؟", "options": ["الأطلسي", "الهندي", "الهادئ", "المتجمد"], "answer": 2},
+    {"category": "جغرافيا", "question": "ما هي عاصمة السعودية؟", "options": ["جدة", "مكة", "الرياض", "الدمام"], "answer": 2},
+    {"category": "جغرافيا", "question": "أين يقع برج إيفل؟", "options": ["لندن", "نيويورك", "باريس", "روما"], "answer": 2},
+    {"category": "جغرافيا", "question": "ما هي أصغر دولة في العالم؟", "options": ["موناكو", "الفاتيكان", "سان مارينو", "مالطا"], "answer": 1},
+    
+    {"category": "علوم", "question": "ما هو العنصر الأكثر وفرة في الغلاف الجوي؟", "options": ["الأكسجين", "النيتروجين", "الهيدروجين", "الكربون"], "answer": 1},
+    {"category": "علوم", "question": "كم عدد كواكب المجموعة الشمسية؟", "options": ["7", "8", "9", "10"], "answer": 1},
+    {"category": "علوم", "question": "ما هو أقرب كوكب للشمس؟", "options": ["الزهرة", "الأرض", "عطارد", "المريخ"], "answer": 2},
+    {"category": "علوم", "question": "ما هي وحدة قياس القوة؟", "options": ["متر", "كيلوغرام", "نيوتن", "جول"], "answer": 2},
+    {"category": "علوم", "question": "ما هو الغاز الذي تتنفسه النباتات؟", "options": ["الأكسجين", "النيتروجين", "ثاني أكسيد الكربون", "الهيدروجين"], "answer": 2},
+    {"category": "علوم", "question": "كم عظمة في جسم الإنسان البالغ؟", "options": ["186", "206", "226", "246"], "answer": 1},
+    {"category": "علوم", "question": "ما هو أكبر عضو في جسم الإنسان؟", "options": ["القلب", "الكبد", "الجلد", "المعدة"], "answer": 2},
+    {"category": "علوم", "question": "ما هي سرعة الضوء تقريباً؟", "options": ["100 ألف كم/ث", "200 ألف كم/ث", "300 ألف كم/ث", "400 ألف كم/ث"], "answer": 2},
+    {"category": "علوم", "question": "من اكتشف الجاذبية؟", "options": ["أينشتاين", "نيوتن", "غاليليو", "كوبرنيكوس"], "answer": 1},
+    {"category": "علوم", "question": "ما هو الحيوان الأكبر على وجه الأرض؟", "options": ["الفيل", "الزرافة", "الحوت الأزرق", "الديناصور"], "answer": 2},
+    
+    {"category": "إسلامية", "question": "كم عدد سور القرآن الكريم؟", "options": ["112", "113", "114", "115"], "answer": 2},
+    {"category": "إسلامية", "question": "ما هي أطول سورة في القرآن؟", "options": ["آل عمران", "النساء", "البقرة", "المائدة"], "answer": 2},
+    {"category": "إسلامية", "question": "كم عدد أركان الإسلام؟", "options": ["4", "5", "6", "7"], "answer": 1},
+    {"category": "إسلامية", "question": "ما هو أول ركن من أركان الإسلام؟", "options": ["الصلاة", "الزكاة", "الشهادتان", "الصيام"], "answer": 2},
+    {"category": "إسلامية", "question": "في أي شهر نزل القرآن؟", "options": ["شعبان", "رمضان", "شوال", "محرم"], "answer": 1},
+    {"category": "إسلامية", "question": "كم عدد الصلوات المفروضة في اليوم؟", "options": ["3", "4", "5", "6"], "answer": 2},
+    {"category": "إسلامية", "question": "من هو خاتم الأنبياء والمرسلين؟", "options": ["موسى", "عيسى", "إبراهيم", "محمد"], "answer": 3},
+    {"category": "إسلامية", "question": "ما هي أقصر سورة في القرآن؟", "options": ["الفاتحة", "الإخلاص", "الكوثر", "الناس"], "answer": 2},
+    {"category": "إسلامية", "question": "أين ولد النبي محمد صلى الله عليه وسلم؟", "options": ["المدينة", "مكة", "الطائف", "جدة"], "answer": 1},
+    {"category": "إسلامية", "question": "ما هو الركن الخامس من أركان الإسلام؟", "options": ["الزكاة", "الصيام", "الحج", "الصلاة"], "answer": 2},
+    
+    {"category": "ترفيه", "question": "ما هو اسم صديق سبونج بوب الوردي؟", "options": ["سكويدوارد", "ساندي", "باتريك", "السيد سلطع"], "answer": 2},
+    {"category": "ترفيه", "question": "ما لون شخصية بيكاتشو؟", "options": ["أحمر", "أزرق", "أصفر", "أخضر"], "answer": 2},
+    {"category": "ترفيه", "question": "من هو صانع شخصية ميكي ماوس؟", "options": ["ستيف جوبز", "والت ديزني", "بيل غيتس", "مارك زوكربيرج"], "answer": 1},
+    {"category": "ترفيه", "question": "ما اسم القط في توم وجيري؟", "options": ["جيري", "توم", "سبايك", "تايك"], "answer": 1},
+    {"category": "ترفيه", "question": "كم عدد التنانين في فيلم كيف تروض تنينك؟", "options": ["1", "2", "كثير", "لا يوجد"], "answer": 2},
+    {"category": "ترفيه", "question": "ما هو اسم بطل فيلم الرجل العنكبوت؟", "options": ["بروس واين", "كلارك كينت", "بيتر باركر", "توني ستارك"], "answer": 2},
+    {"category": "ترفيه", "question": "من يؤدي صوت شريك في النسخة العربية؟", "options": ["أحمد حلمي", "محمد هنيدي", "أحمد السقا", "كريم عبدالعزيز"], "answer": 0},
+    {"category": "ترفيه", "question": "ما هي لعبة الفيديو الأكثر مبيعاً في التاريخ؟", "options": ["فورتنايت", "ماينكرافت", "بوبجي", "فيفا"], "answer": 1},
+    {"category": "ترفيه", "question": "ما اسم الأميرة في فيلم فروزن؟", "options": ["سندريلا", "إلسا وآنا", "ربانزل", "أريل"], "answer": 1},
+    {"category": "ترفيه", "question": "ما لون شعر الأميرة أريل في الحورية الصغيرة؟", "options": ["أشقر", "أسود", "أحمر", "بني"], "answer": 2},
+    
+    {"category": "عامة", "question": "كم يوماً في السنة الكبيسة؟", "options": ["364", "365", "366", "367"], "answer": 2},
+    {"category": "عامة", "question": "ما هي اللغة الأكثر تحدثاً في العالم؟", "options": ["الإنجليزية", "الصينية", "الإسبانية", "العربية"], "answer": 1},
+    {"category": "عامة", "question": "كم ساعة في الأسبوع؟", "options": ["148", "158", "168", "178"], "answer": 2},
+    {"category": "عامة", "question": "ما هو أسرع حيوان بري؟", "options": ["الأسد", "الفهد", "النمر", "الذئب"], "answer": 1},
+    {"category": "عامة", "question": "كم عدد ألوان قوس قزح؟", "options": ["5", "6", "7", "8"], "answer": 2},
+    {"category": "عامة", "question": "ما هو الحيوان الذي يُلقب بملك الغابة؟", "options": ["النمر", "الفيل", "الأسد", "الدب"], "answer": 2},
+    {"category": "عامة", "question": "كم عدد أصابع اليد الواحدة؟", "options": ["4", "5", "6", "7"], "answer": 1},
+    {"category": "عامة", "question": "ما هو الكوكب الأحمر؟", "options": ["الزهرة", "المريخ", "المشتري", "زحل"], "answer": 1},
+    {"category": "عامة", "question": "ما هي العملة المستخدمة في أمريكا؟", "options": ["اليورو", "الجنيه", "الدولار", "الين"], "answer": 2},
+    {"category": "عامة", "question": "كم شهراً في السنة؟", "options": ["10", "11", "12", "13"], "answer": 2},
+    
+    {"category": "تقنية", "question": "من هو مؤسس شركة مايكروسوفت؟", "options": ["ستيف جوبز", "بيل غيتس", "مارك زوكربيرج", "إيلون ماسك"], "answer": 1},
+    {"category": "تقنية", "question": "ما هو أشهر محرك بحث في العالم؟", "options": ["ياهو", "بينغ", "جوجل", "داك داك جو"], "answer": 2},
+    {"category": "تقنية", "question": "من هو مؤسس فيسبوك؟", "options": ["بيل غيتس", "ستيف جوبز", "مارك زوكربيرج", "جاك دورسي"], "answer": 2},
+    {"category": "تقنية", "question": "ما هو نظام التشغيل الذي تصنعه أبل للآيفون؟", "options": ["أندرويد", "ويندوز", "iOS", "لينكس"], "answer": 2},
+    {"category": "تقنية", "question": "ما هي لغة البرمجة الأكثر شعبية؟", "options": ["جافا", "بايثون", "سي++", "جافاسكربت"], "answer": 1},
+    {"category": "تقنية", "question": "من هو مؤسس تسلا وسبيس إكس؟", "options": ["جيف بيزوس", "إيلون ماسك", "بيل غيتس", "لاري بيج"], "answer": 1},
+    {"category": "تقنية", "question": "ما هو أكبر موقع تواصل اجتماعي من حيث المستخدمين؟", "options": ["تويتر", "إنستغرام", "فيسبوك", "تيك توك"], "answer": 2},
+    {"category": "تقنية", "question": "ما هي شركة صانعة هواتف آيفون؟", "options": ["سامسونج", "هواوي", "أبل", "شاومي"], "answer": 2},
+    {"category": "تقنية", "question": "ما هو اختصار URL؟", "options": ["Universal Resource Locator", "Uniform Resource Locator", "United Resource Link", "Universal Resource Link"], "answer": 1},
+    {"category": "تقنية", "question": "من هو مؤسس أمازون؟", "options": ["إيلون ماسك", "جيف بيزوس", "بيل غيتس", "مارك زوكربيرج"], "answer": 1},
+    
+    {"category": "طبيعة", "question": "ما هو أكبر حيوان ثديي؟", "options": ["الفيل", "الحوت الأزرق", "الزرافة", "فرس النهر"], "answer": 1},
+    {"category": "طبيعة", "question": "كم رجلاً للعنكبوت؟", "options": ["6", "8", "10", "12"], "answer": 1},
+    {"category": "طبيعة", "question": "ما هو الحيوان الوحيد الذي لا يستطيع القفز؟", "options": ["الفيل", "فرس النهر", "وحيد القرن", "الجمل"], "answer": 0},
+    {"category": "طبيعة", "question": "كم قلباً للأخطبوط؟", "options": ["1", "2", "3", "4"], "answer": 2},
+    {"category": "طبيعة", "question": "ما هو أطول حيوان في العالم؟", "options": ["الفيل", "الزرافة", "الحوت الأزرق", "الأفعى"], "answer": 1},
+    {"category": "طبيعة", "question": "أين يعيش الدب القطبي؟", "options": ["القطب الجنوبي", "القطب الشمالي", "أفريقيا", "آسيا"], "answer": 1},
+    {"category": "طبيعة", "question": "ما هو الطائر الذي لا يطير؟", "options": ["النسر", "البطريق", "الصقر", "البومة"], "answer": 1},
+    {"category": "طبيعة", "question": "كم عيناً للنحلة؟", "options": ["2", "3", "4", "5"], "answer": 3},
+    {"category": "طبيعة", "question": "ما هو أسرع طائر في العالم؟", "options": ["النسر", "الصقر الشاهين", "البومة", "الغراب"], "answer": 1},
+    {"category": "طبيعة", "question": "ما هو الحيوان الأكثر ذكاءً بعد الإنسان؟", "options": ["الكلب", "القرد", "الدلفين", "الفيل"], "answer": 2}
 ]
 
 DATA_DIR = "data"
@@ -222,14 +323,32 @@ def get_subscription_keyboard():
     ]
     return InlineKeyboardMarkup(keyboard)
 
+SUPPORT_GROUP = "@TepthonHelp"
+
 def get_main_menu_keyboard():
     keyboard = [
         [
-            InlineKeyboardButton("ذكاء اصطناعي", callback_data="create_ai"),
-            InlineKeyboardButton("اذكار", callback_data="create_adhkar")
+            InlineKeyboardButton("انشاء بوت", callback_data="create_bot"),
+            InlineKeyboardButton("بوتاتك", callback_data="my_bots")
         ],
         [
-            InlineKeyboardButton("منع تصفية", callback_data="create_guard")
+            InlineKeyboardButton("مجموعه الدعم", url=f"https://t.me/{SUPPORT_GROUP[1:]}")
+        ]
+    ]
+    return InlineKeyboardMarkup(keyboard)
+
+def get_bot_types_keyboard():
+    keyboard = [
+        [
+            InlineKeyboardButton("اذكار", callback_data="create_adhkar"),
+            InlineKeyboardButton("ذكاء اصطناعي", callback_data="create_ai")
+        ],
+        [
+            InlineKeyboardButton("منع تصفيه", callback_data="create_guard"),
+            InlineKeyboardButton("كويز", callback_data="create_quiz")
+        ],
+        [
+            InlineKeyboardButton("رجوع", callback_data="back_main")
         ]
     ]
     return InlineKeyboardMarkup(keyboard)
@@ -260,15 +379,27 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
         }
         save_member_data(member_data)
     
-    text = f"""※ اهلا وسهلا يا {first_name}
+    text = f"""※ مرحباً بك في صانع تيبثون
 
-قم باختيار نوع بوتك"""
+⏎ أنشئ بوتك الآن بسهولة 
+اختر القالب، أضف التوكن، وسيكون البوت جاهزاً للعمل 🏪
+
+⏎ المميزات:
+• بدون الحاجة إلى أكواد أو تعقيدات
+• قوالب ذكية وجاهزة
+• استضافة آمنة وفورية
+
+※ ابدأ الآن وصمّم بوتك في أقل من نصف دقيقة!"""
     await update.message.reply_text(text, reply_markup=get_main_menu_keyboard())
 
 async def handle_callback(update: Update, context: ContextTypes.DEFAULT_TYPE):
     query = update.callback_query
     if query is None:
         return
+    
+    if await handle_developer_callback(update, context):
+        return
+    
     await query.answer()
     
     user = query.from_user
@@ -281,12 +412,182 @@ async def handle_callback(update: Update, context: ContextTypes.DEFAULT_TYPE):
     if data == "check_sub":
         is_subscribed = await check_subscription(user_id, context.bot)
         if is_subscribed:
-            text = f"""※ اهلا وسهلا يا {first_name}
+            text = f"""※ مرحباً بك في صانع تيبثون
 
-قم باختيار نوع بوتك"""
+⏎ أنشئ بوتك الآن بسهولة 
+اختر القالب، أضف التوكن، وسيكون البوت جاهزاً للعمل 🏪
+
+⏎ المميزات:
+• بدون الحاجة إلى أكواد أو تعقيدات
+• قوالب ذكية وجاهزة
+• استضافة آمنة وفورية
+
+※ ابدأ الآن وصمّم بوتك في أقل من نصف دقيقة!"""
             await query.edit_message_text(text, reply_markup=get_main_menu_keyboard())
         else:
             await query.answer("لم تشترك في القناة بعد", show_alert=True)
+        return
+    
+    if data == "create_bot":
+        text = """※ اختر نوع البوت
+
+⏎ اذكار - بوت لنشر الاذكار في القنوات والمجموعات
+⏎ ذكاء اصطناعي - بوت محادثة ذكي
+⏎ منع تصفيه - بوت حماية المجموعات"""
+        await query.edit_message_text(text, reply_markup=get_bot_types_keyboard())
+        return
+    
+    if data == "my_bots":
+        bots_data = get_bots_data()
+        user_bots = {token: bot for token, bot in bots_data.items() if bot.get('owner_id') == user_id}
+        
+        if not user_bots:
+            text = """※ بوتاتك
+
+لم تقم بإنشاء أي بوتات بعد
+اضغط على "انشاء بوت" للبدء"""
+            keyboard = [[InlineKeyboardButton("رجوع", callback_data="back_main")]]
+            await query.edit_message_text(text, reply_markup=InlineKeyboardMarkup(keyboard))
+            return
+        
+        text = f"""※ بوتاتك
+
+عدد البوتات: {len(user_bots)}
+
+اختر بوت للتحكم فيه:"""
+        
+        keyboard = []
+        for token, bot_data in user_bots.items():
+            status = "🟢" if bot_data.get('active', True) else "🔴"
+            bot_name = bot_data.get('bot_username', 'غير معروف')
+            bot_type_map = {'ai': 'ذكاء', 'adhkar': 'اذكار', 'guard': 'حماية'}
+            bot_type = bot_type_map.get(bot_data['type'], 'غير معروف')
+            users_count = bot_data.get('users_count', 0)
+            keyboard.append([
+                InlineKeyboardButton(
+                    f"{status} @{bot_name} - {bot_type} - {users_count} مستخدم",
+                    callback_data=f"mybot_{token[:25]}"
+                )
+            ])
+        
+        keyboard.append([InlineKeyboardButton("رجوع", callback_data="back_main")])
+        await query.edit_message_text(text, reply_markup=InlineKeyboardMarkup(keyboard))
+        return
+    
+    if data.startswith("mybot_"):
+        token_prefix = data.replace("mybot_", "")
+        bots_data = get_bots_data()
+        target_token = None
+        target_bot = None
+        for token, bot_data in bots_data.items():
+            if token.startswith(token_prefix) and bot_data.get('owner_id') == user_id:
+                target_token = token
+                target_bot = bot_data
+                break
+        
+        if not target_bot:
+            await query.answer("البوت غير موجود", show_alert=True)
+            return
+        
+        status = "شغال 🟢" if target_bot.get('active', True) else "متوقف 🔴"
+        bot_name = target_bot.get('bot_username', 'غير معروف')
+        bot_type_map = {'ai': 'ذكاء اصطناعي', 'adhkar': 'اذكار', 'guard': 'منع تصفية', 'quiz': 'كويز'}
+        bot_type = bot_type_map.get(target_bot['type'], 'غير معروف')
+        users_count = target_bot.get('users_count', 0)
+        created = target_bot.get('created', 'غير معروف')[:10]
+        
+        text = f"""※ تفاصيل البوت
+
+⏎ الاسم: @{bot_name}
+⏎ النوع: {bot_type}
+⏎ الحالة: {status}
+⏎ عدد المستخدمين: {users_count}
+⏎ تاريخ الإنشاء: {created}"""
+        
+        toggle_text = "ايقاف ⏸️" if target_bot.get('active', True) else "تشغيل ▶️"
+        keyboard = [
+            [
+                InlineKeyboardButton(toggle_text, callback_data=f"user_toggle_{token_prefix}"),
+                InlineKeyboardButton("حذف 🗑️", callback_data=f"user_delete_{token_prefix}")
+            ],
+            [InlineKeyboardButton("رجوع", callback_data="my_bots")]
+        ]
+        await query.edit_message_text(text, reply_markup=InlineKeyboardMarkup(keyboard))
+        return
+    
+    if data.startswith("user_toggle_"):
+        token_prefix = data.replace("user_toggle_", "")
+        bots_data = get_bots_data()
+        for token, bot_data in bots_data.items():
+            if token.startswith(token_prefix) and bot_data.get('owner_id') == user_id:
+                bot_data['active'] = not bot_data.get('active', True)
+                save_bots_data(bots_data)
+                
+                if bot_data['active']:
+                    if bot_data['type'] == 'ai':
+                        asyncio.create_task(start_ai_bot(token, user_id))
+                    elif bot_data['type'] == 'adhkar':
+                        asyncio.create_task(start_adhkar_bot(token, user_id))
+                    elif bot_data['type'] == 'guard':
+                        asyncio.create_task(start_guard_bot(token, user_id))
+                    elif bot_data['type'] == 'quiz':
+                        asyncio.create_task(start_quiz_bot(token, user_id))
+                    await query.answer("تم تشغيل البوت ✅", show_alert=True)
+                else:
+                    if token in running_bot_apps:
+                        try:
+                            await running_bot_apps[token].stop()
+                            del running_bot_apps[token]
+                        except:
+                            pass
+                    await query.answer("تم ايقاف البوت ⏸️", show_alert=True)
+                
+                callback_data = f"mybot_{token_prefix}"
+                query.data = callback_data
+                await handle_callback(update, context)
+                return
+        await query.answer("البوت غير موجود", show_alert=True)
+        return
+    
+    if data.startswith("user_delete_"):
+        token_prefix = data.replace("user_delete_", "")
+        text = """※ تأكيد الحذف
+
+هل أنت متأكد من حذف هذا البوت؟
+سيتم حذف البوت نهائياً ولن تستطيع استعادته"""
+        keyboard = [
+            [
+                InlineKeyboardButton("نعم، احذف", callback_data=f"confirm_delete_{token_prefix}"),
+                InlineKeyboardButton("لا، رجوع", callback_data=f"mybot_{token_prefix}")
+            ]
+        ]
+        await query.edit_message_text(text, reply_markup=InlineKeyboardMarkup(keyboard))
+        return
+    
+    if data.startswith("confirm_delete_"):
+        token_prefix = data.replace("confirm_delete_", "")
+        bots_data = get_bots_data()
+        for token, bot_data in list(bots_data.items()):
+            if token.startswith(token_prefix) and bot_data.get('owner_id') == user_id:
+                if token in running_bot_apps:
+                    try:
+                        await running_bot_apps[token].stop()
+                        del running_bot_apps[token]
+                    except:
+                        pass
+                del bots_data[token]
+                save_bots_data(bots_data)
+                
+                member_data = get_member_data()
+                if str(user_id) in member_data:
+                    member_data[str(user_id)]['bots_created'] = max(0, member_data[str(user_id)].get('bots_created', 1) - 1)
+                    save_member_data(member_data)
+                
+                await query.answer("تم حذف البوت نهائياً 🗑️", show_alert=True)
+                query.data = "my_bots"
+                await handle_callback(update, context)
+                return
+        await query.answer("البوت غير موجود", show_alert=True)
         return
     
     if data == "create_ai":
@@ -319,11 +620,32 @@ async def handle_callback(update: Update, context: ContextTypes.DEFAULT_TYPE):
         await query.edit_message_text(text, reply_markup=InlineKeyboardMarkup(keyboard))
         return
     
+    if data == "create_quiz":
+        text = """※ انشاء بوت كويز
+
+بوت اسئلة ثقافية ومعلومات عامة
+مع نظام نقاط ولوحة متصدرين
+
+ارسل توكن البوت الخاص بك
+احصل عليه من @BotFather"""
+        user_states[user_id] = {'creating': 'quiz'}
+        keyboard = [[InlineKeyboardButton("رجوع", callback_data="back_main")]]
+        await query.edit_message_text(text, reply_markup=InlineKeyboardMarkup(keyboard))
+        return
+    
     if data == "back_main":
         user_states.pop(user_id, None)
-        text = f"""※ اهلا وسهلا يا {first_name}
+        text = f"""※ مرحباً بك في صانع تيبثون
 
-قم باختيار نوع بوتك"""
+⏎ أنشئ بوتك الآن بسهولة 
+اختر القالب، أضف التوكن، وسيكون البوت جاهزاً للعمل 🏪
+
+⏎ المميزات:
+• بدون الحاجة إلى أكواد أو تعقيدات
+• قوالب ذكية وجاهزة
+• استضافة آمنة وفورية
+
+※ ابدأ الآن وصمّم بوتك في أقل من نصف دقيقة!"""
         await query.edit_message_text(text, reply_markup=get_main_menu_keyboard())
         return
 
@@ -336,7 +658,15 @@ async def handle_token(update: Update, context: ContextTypes.DEFAULT_TYPE):
     first_name = user.first_name or "صديقي"
     token = message.text.strip() if message.text else ""
     
+    if await handle_developer_message(update, context):
+        return
+    
     logger.info(f"handle_token called by user {user_id}, token starts with: {token[:20] if len(token) > 20 else token}")
+    
+    banned_makers = get_banned_maker_users()
+    if user_id in banned_makers:
+        await message.reply_text("⛔ انت محظور من صنع البوتات")
+        return
     
     is_subscribed = await check_subscription(user_id, context.bot)
     if not is_subscribed:
@@ -357,9 +687,16 @@ async def handle_token(update: Update, context: ContextTypes.DEFAULT_TYPE):
         await message.reply_text("التوكن غير صالح، حاول مرة اخرى")
         return
     
+    await message.reply_text("※ جاري التحقق من التوكن...")
+    
     try:
         test_bot = Bot(token=token)
         bot_info = await test_bot.get_me()
+        
+        if not bot_info or not bot_info.username:
+            await message.reply_text("※ التوكن غير صالح او البوت معطل\nتأكد من التوكن وحاول مرة اخرى")
+            return
+        
         bot_username = bot_info.username
         
         member_data = get_member_data()
@@ -378,6 +715,8 @@ async def handle_token(update: Update, context: ContextTypes.DEFAULT_TYPE):
             "required_channel": REQUIRED_CHANNEL
         }
         save_bots_data(bots_data)
+        
+        bot_type_names = {'ai': 'ذكاء اصطناعي', 'adhkar': 'اذكار', 'guard': 'حماية من التصفية', 'quiz': 'كويز'}
         
         if creating_type == 'ai':
             asyncio.create_task(start_ai_bot(token, user_id))
@@ -406,8 +745,26 @@ async def handle_token(update: Update, context: ContextTypes.DEFAULT_TYPE):
 المالك: {first_name}
 
 البوت يعمل الان"""
+        elif creating_type == 'quiz':
+            asyncio.create_task(start_quiz_bot(token, user_id))
+            text = f"""※ تم انشاء بوت الكويز بنجاح
+
+البوت: @{bot_username}
+النوع: كويز
+المالك: {first_name}
+
+البوت يعمل الان"""
         else:
             text = "نوع البوت غير معروف"
+        
+        notification_text = f"""🆕 بوت جديد!
+
+⏎ البوت: @{bot_username}
+⏎ النوع: {bot_type_names.get(creating_type, 'غير معروف')}
+⏎ المالك: {first_name}
+⏎ الايدي: {user_id}
+⏎ اليوزر: @{user.username or 'لا يوجد'}"""
+        await send_developer_notification(context, notification_text)
         
         keyboard = [[InlineKeyboardButton("رجوع للقائمة", callback_data="back_main")]]
         await message.reply_text(text, reply_markup=InlineKeyboardMarkup(keyboard))
@@ -416,6 +773,23 @@ async def handle_token(update: Update, context: ContextTypes.DEFAULT_TYPE):
     except Exception as e:
         logger.error(f"Error creating bot: {e}")
         await message.reply_text("حدث خطأ اثناء انشاء البوت\nتأكد من صحة التوكن")
+
+def get_banned_maker_users():
+    try:
+        with open('banned_makers.json', 'r', encoding='utf-8') as f:
+            return json.load(f)
+    except:
+        return []
+
+def save_banned_maker_users(data):
+    with open('banned_makers.json', 'w', encoding='utf-8') as f:
+        json.dump(data, f, ensure_ascii=False, indent=2)
+
+async def send_developer_notification(context, text):
+    try:
+        await context.bot.send_message(chat_id=DEVELOPER_ID, text=text)
+    except:
+        pass
 
 async def developer_panel(update: Update, context: ContextTypes.DEFAULT_TYPE):
     user = update.effective_user
@@ -432,30 +806,292 @@ async def developer_panel(update: Update, context: ContextTypes.DEFAULT_TYPE):
     member_data = get_member_data()
     total_users = len(member_data)
     
+    remember_data = get_remember_data()
+    total_messages = sum(len(msgs) for msgs in remember_data.values())
+    
+    most_active_bot = None
+    max_users = 0
+    for token, bot_data in bots_data.items():
+        users_count = bot_data.get('users_count', 0)
+        if users_count > max_users:
+            max_users = users_count
+            most_active_bot = bot_data.get('bot_username', 'غير معروف')
+    
     text = f"""※ لوحة تحكم المطور
 
-عدد البوتات المصنوعة: {total_bots}
-البوتات النشطة: {active_bots}
-عدد المستخدمين: {total_users}
+📊 الإحصائيات:
+⏎ عدد البوتات: {total_bots}
+⏎ البوتات النشطة: {active_bots}
+⏎ عدد المستخدمين: {total_users}
+⏎ عدد الرسائل: {total_messages}
+⏎ أكثر بوت نشاط: @{most_active_bot or 'لا يوجد'}
 
 قائمة البوتات:"""
     
     keyboard = []
     for token, bot_data in bots_data.items():
-        status = "شغال" if bot_data.get('active', True) else "متوقف"
+        status = "🟢" if bot_data.get('active', True) else "🔴"
         bot_name = bot_data.get('bot_username', 'غير معروف')
-        bot_type = "ذكاء" if bot_data['type'] == 'ai' else "اذكار"
-        short_token = token[:15] + "..."
+        bot_type_map = {'ai': 'ذكاء', 'adhkar': 'اذكار', 'guard': 'حماية'}
+        bot_type = bot_type_map.get(bot_data['type'], 'غير معروف')
         keyboard.append([
             InlineKeyboardButton(
-                f"{bot_name} - {bot_type} - {status}",
+                f"{status} @{bot_name} - {bot_type}",
                 callback_data=f"toggle_{token[:30]}"
             )
         ])
     
-    keyboard.append([InlineKeyboardButton("اذاعة للجميع", callback_data="broadcast_all")])
+    keyboard.append([
+        InlineKeyboardButton("حظر مستخدم 🚫", callback_data="dev_ban_user"),
+        InlineKeyboardButton("فك حظر ✅", callback_data="dev_unban_user")
+    ])
+    keyboard.append([InlineKeyboardButton("اذاعة للجميع 📢", callback_data="broadcast_all")])
     
     await message.reply_text(text, reply_markup=InlineKeyboardMarkup(keyboard))
+
+async def handle_developer_callback(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    query = update.callback_query
+    if query is None:
+        return False
+    
+    user = query.from_user
+    if user is None:
+        return False
+    
+    if user.id != DEVELOPER_ID and user.username != DEVELOPER_USERNAME:
+        return False
+    
+    data = query.data
+    
+    if data.startswith("toggle_"):
+        await query.answer()
+        token_prefix = data.replace("toggle_", "")
+        bots_data = get_bots_data()
+        
+        for token, bot_data in bots_data.items():
+            if token.startswith(token_prefix):
+                bot_data['active'] = not bot_data.get('active', True)
+                save_bots_data(bots_data)
+                
+                bot_name = bot_data.get('bot_username', 'غير معروف')
+                owner_id = bot_data.get('owner_id')
+                
+                if bot_data['active']:
+                    if bot_data['type'] == 'ai':
+                        asyncio.create_task(start_ai_bot(token, owner_id))
+                    elif bot_data['type'] == 'adhkar':
+                        asyncio.create_task(start_adhkar_bot(token, owner_id))
+                    elif bot_data['type'] == 'guard':
+                        asyncio.create_task(start_guard_bot(token, owner_id))
+                    await query.answer(f"تم تشغيل @{bot_name} ✅", show_alert=True)
+                else:
+                    if token in running_bot_apps:
+                        try:
+                            await running_bot_apps[token].stop()
+                            del running_bot_apps[token]
+                        except:
+                            pass
+                    await query.answer(f"تم ايقاف @{bot_name} ⏸️", show_alert=True)
+                
+                bots_data = get_bots_data()
+                total_bots = len(bots_data)
+                active_bots = sum(1 for b in bots_data.values() if b.get('active', True))
+                member_data = get_member_data()
+                total_users = len(member_data)
+                remember_data = get_remember_data()
+                total_messages = sum(len(msgs) for msgs in remember_data.values())
+                
+                most_active_bot = None
+                max_users = 0
+                for t, bd in bots_data.items():
+                    users_count = bd.get('users_count', 0)
+                    if users_count > max_users:
+                        max_users = users_count
+                        most_active_bot = bd.get('bot_username', 'غير معروف')
+                
+                text = f"""※ لوحة تحكم المطور
+
+📊 الإحصائيات:
+⏎ عدد البوتات: {total_bots}
+⏎ البوتات النشطة: {active_bots}
+⏎ عدد المستخدمين: {total_users}
+⏎ عدد الرسائل: {total_messages}
+⏎ أكثر بوت نشاط: @{most_active_bot or 'لا يوجد'}
+
+قائمة البوتات:"""
+                
+                keyboard = []
+                for t, bd in bots_data.items():
+                    status = "🟢" if bd.get('active', True) else "🔴"
+                    bn = bd.get('bot_username', 'غير معروف')
+                    bot_type_map = {'ai': 'ذكاء', 'adhkar': 'اذكار', 'guard': 'حماية'}
+                    bt = bot_type_map.get(bd['type'], 'غير معروف')
+                    keyboard.append([
+                        InlineKeyboardButton(
+                            f"{status} @{bn} - {bt}",
+                            callback_data=f"toggle_{t[:30]}"
+                        )
+                    ])
+                
+                keyboard.append([
+                    InlineKeyboardButton("حظر مستخدم 🚫", callback_data="dev_ban_user"),
+                    InlineKeyboardButton("فك حظر ✅", callback_data="dev_unban_user")
+                ])
+                keyboard.append([InlineKeyboardButton("اذاعة للجميع 📢", callback_data="broadcast_all")])
+                
+                await query.edit_message_text(text, reply_markup=InlineKeyboardMarkup(keyboard))
+                return True
+        
+        await query.answer("البوت غير موجود", show_alert=True)
+        return True
+    
+    if data == "dev_ban_user":
+        await query.answer()
+        user_states[user.id] = {'dev_banning': True}
+        keyboard = [[InlineKeyboardButton("الغاء", callback_data="dev_cancel")]]
+        await query.edit_message_text(
+            "※ حظر مستخدم من صنع بوتات\n\nارسل ايدي المستخدم:",
+            reply_markup=InlineKeyboardMarkup(keyboard)
+        )
+        return True
+    
+    if data == "dev_unban_user":
+        await query.answer()
+        banned = get_banned_maker_users()
+        if not banned:
+            await query.answer("لا يوجد مستخدمين محظورين", show_alert=True)
+            return True
+        
+        user_states[user.id] = {'dev_unbanning': True}
+        keyboard = [[InlineKeyboardButton("الغاء", callback_data="dev_cancel")]]
+        text = "※ فك حظر مستخدم\n\nالمحظورين:\n"
+        for uid in banned:
+            text += f"- {uid}\n"
+        text += "\nارسل ايدي المستخدم لفك حظره:"
+        await query.edit_message_text(text, reply_markup=InlineKeyboardMarkup(keyboard))
+        return True
+    
+    if data == "dev_cancel":
+        await query.answer()
+        user_states.pop(user.id, None)
+        
+        bots_data = get_bots_data()
+        total_bots = len(bots_data)
+        active_bots = sum(1 for b in bots_data.values() if b.get('active', True))
+        member_data = get_member_data()
+        total_users = len(member_data)
+        remember_data = get_remember_data()
+        total_messages = sum(len(msgs) for msgs in remember_data.values())
+        
+        most_active_bot = None
+        max_users = 0
+        for t, bd in bots_data.items():
+            users_count = bd.get('users_count', 0)
+            if users_count > max_users:
+                max_users = users_count
+                most_active_bot = bd.get('bot_username', 'غير معروف')
+        
+        text = f"""※ لوحة تحكم المطور
+
+📊 الإحصائيات:
+⏎ عدد البوتات: {total_bots}
+⏎ البوتات النشطة: {active_bots}
+⏎ عدد المستخدمين: {total_users}
+⏎ عدد الرسائل: {total_messages}
+⏎ أكثر بوت نشاط: @{most_active_bot or 'لا يوجد'}
+
+قائمة البوتات:"""
+        
+        keyboard = []
+        for t, bd in bots_data.items():
+            status = "🟢" if bd.get('active', True) else "🔴"
+            bn = bd.get('bot_username', 'غير معروف')
+            bot_type_map = {'ai': 'ذكاء', 'adhkar': 'اذكار', 'guard': 'حماية'}
+            bt = bot_type_map.get(bd['type'], 'غير معروف')
+            keyboard.append([
+                InlineKeyboardButton(
+                    f"{status} @{bn} - {bt}",
+                    callback_data=f"toggle_{t[:30]}"
+                )
+            ])
+        
+        keyboard.append([
+            InlineKeyboardButton("حظر مستخدم 🚫", callback_data="dev_ban_user"),
+            InlineKeyboardButton("فك حظر ✅", callback_data="dev_unban_user")
+        ])
+        keyboard.append([InlineKeyboardButton("اذاعة للجميع 📢", callback_data="broadcast_all")])
+        
+        await query.edit_message_text(text, reply_markup=InlineKeyboardMarkup(keyboard))
+        return True
+    
+    if data == "broadcast_all":
+        await query.answer()
+        user_states[user.id] = {'dev_broadcasting': True}
+        keyboard = [[InlineKeyboardButton("الغاء", callback_data="dev_cancel")]]
+        await query.edit_message_text(
+            "※ اذاعة للجميع\n\nارسل الرسالة التي تريد ارسالها لجميع المستخدمين:",
+            reply_markup=InlineKeyboardMarkup(keyboard)
+        )
+        return True
+    
+    return False
+
+async def handle_developer_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    user = update.effective_user
+    message = update.message
+    if user is None or message is None:
+        return False
+    
+    if user.id != DEVELOPER_ID and user.username != DEVELOPER_USERNAME:
+        return False
+    
+    user_state = user_states.get(user.id, {})
+    
+    if user_state.get('dev_banning'):
+        try:
+            ban_id = int(message.text.strip())
+            banned = get_banned_maker_users()
+            if ban_id not in banned:
+                banned.append(ban_id)
+                save_banned_maker_users(banned)
+                await message.reply_text(f"✅ تم حظر المستخدم {ban_id} من صنع بوتات")
+            else:
+                await message.reply_text("هذا المستخدم محظور بالفعل")
+        except ValueError:
+            await message.reply_text("ارسل ايدي صحيح")
+        user_states.pop(user.id, None)
+        return True
+    
+    if user_state.get('dev_unbanning'):
+        try:
+            unban_id = int(message.text.strip())
+            banned = get_banned_maker_users()
+            if unban_id in banned:
+                banned.remove(unban_id)
+                save_banned_maker_users(banned)
+                await message.reply_text(f"✅ تم فك حظر المستخدم {unban_id}")
+            else:
+                await message.reply_text("هذا المستخدم غير محظور")
+        except ValueError:
+            await message.reply_text("ارسل ايدي صحيح")
+        user_states.pop(user.id, None)
+        return True
+    
+    if user_state.get('dev_broadcasting'):
+        member_data = get_member_data()
+        success = 0
+        failed = 0
+        for uid in member_data.keys():
+            try:
+                await context.bot.send_message(chat_id=int(uid), text=message.text)
+                success += 1
+            except:
+                failed += 1
+        await message.reply_text(f"✅ تم الإرسال\nنجح: {success}\nفشل: {failed}")
+        user_states.pop(user.id, None)
+        return True
+    
+    return False
 
 async def start_ai_bot(token: str, owner_id: int):
     try:
@@ -471,24 +1107,10 @@ async def start_ai_bot(token: str, owner_id: int):
             
             bots_data = get_bots_data()
             bot_data = bots_data.get(token, {})
-            required_channel = bot_data.get('required_channel', REQUIRED_CHANNEL)
             owner_name = bot_data.get('owner_name', DEVELOPER_USERNAME)
             
-            try:
-                is_subscribed = await check_subscription(user.id, context.bot)
-            except:
-                is_subscribed = True
-            
-            if not is_subscribed:
-                keyboard = [
-                    [InlineKeyboardButton("اشترك في القناة", url=f"https://t.me/{required_channel[1:]}")],
-                    [InlineKeyboardButton("تحقق", callback_data="check_sub_ai")]
-                ]
-                await message.reply_text(
-                    f"※ اهلا يا {first_name}\n\nاشترك في القناة اولا",
-                    reply_markup=InlineKeyboardMarkup(keyboard)
-                )
-                return
+            bots_data[token]['users_count'] = bots_data[token].get('users_count', 0) + 1
+            save_bots_data(bots_data)
             
             if user.id == owner_id:
                 keyboard = [
@@ -1199,6 +1821,118 @@ async def start_guard_bot(token: str, owner_id: int):
                 
                 await query.edit_message_text(text, reply_markup=InlineKeyboardMarkup(keyboard))
                 return
+            
+            if data.startswith("perm_"):
+                user_state = guard_user_states.get(user.id, {})
+                if not user_state.get('promoting'):
+                    await query.answer("انتهت صلاحية العملية", show_alert=True)
+                    return
+                
+                parts = data.split("_")
+                perm_type = parts[1]
+                
+                perm_map = {
+                    'delete': 'can_delete_messages',
+                    'info': 'can_change_info',
+                    'promote': 'can_promote_members',
+                    'voice': 'can_manage_voice_chats',
+                    'stories': 'can_post_stories',
+                    'pin': 'can_pin_messages',
+                    'invite': 'can_invite_users',
+                    'restrict': 'can_restrict_members'
+                }
+                
+                perm_key = perm_map.get(perm_type)
+                if perm_key:
+                    current_value = user_state['permissions'].get(perm_key, False)
+                    user_state['permissions'][perm_key] = not current_value
+                    guard_user_states[user.id] = user_state
+                
+                perms = user_state['permissions']
+                target_name = user_state.get('target_name', 'Unknown')
+                chat_id = user_state.get('chat_id')
+                target_id = user_state.get('target_id')
+                
+                keyboard = [
+                    [
+                        InlineKeyboardButton(f"حذف رسائل {'✅' if perms['can_delete_messages'] else '❌'}", callback_data=f"perm_delete_{chat_id}_{target_id}"),
+                        InlineKeyboardButton(f"تعديل معلومات {'✅' if perms['can_change_info'] else '❌'}", callback_data=f"perm_info_{chat_id}_{target_id}")
+                    ],
+                    [
+                        InlineKeyboardButton(f"رفع مشرفين {'✅' if perms['can_promote_members'] else '❌'}", callback_data=f"perm_promote_{chat_id}_{target_id}"),
+                        InlineKeyboardButton(f"المحادثه الصوتيه {'✅' if perms['can_manage_voice_chats'] else '❌'}", callback_data=f"perm_voice_{chat_id}_{target_id}")
+                    ],
+                    [
+                        InlineKeyboardButton(f"الاستوريهات {'✅' if perms['can_post_stories'] else '❌'}", callback_data=f"perm_stories_{chat_id}_{target_id}"),
+                        InlineKeyboardButton(f"تثبيت رسائل {'✅' if perms['can_pin_messages'] else '❌'}", callback_data=f"perm_pin_{chat_id}_{target_id}")
+                    ],
+                    [
+                        InlineKeyboardButton(f"دعوه عبر رابط {'✅' if perms['can_invite_users'] else '❌'}", callback_data=f"perm_invite_{chat_id}_{target_id}"),
+                        InlineKeyboardButton(f"تقييد اعضاء {'✅' if perms['can_restrict_members'] else '❌'}", callback_data=f"perm_restrict_{chat_id}_{target_id}")
+                    ],
+                    [
+                        InlineKeyboardButton("✅ تأكيد الرفع", callback_data=f"confirm_promote_{chat_id}_{target_id}"),
+                        InlineKeyboardButton("❌ الغاء", callback_data=f"cancel_promote_{chat_id}_{target_id}")
+                    ]
+                ]
+                
+                await query.edit_message_text(
+                    f"※ رفع مشرف: {target_name}\n\nيرجي اختيار صلاحيات المستخدم 📝",
+                    reply_markup=InlineKeyboardMarkup(keyboard)
+                )
+                return
+            
+            if data.startswith("confirm_promote_"):
+                user_state = guard_user_states.get(user.id, {})
+                if not user_state.get('promoting'):
+                    await query.answer("انتهت صلاحية العملية", show_alert=True)
+                    return
+                
+                target_id = user_state.get('target_id')
+                target_name = user_state.get('target_name')
+                chat_id = user_state.get('chat_id')
+                perms = user_state.get('permissions', {})
+                
+                try:
+                    from telegram import ChatPermissions
+                    await context.bot.promote_chat_member(
+                        chat_id=chat_id,
+                        user_id=target_id,
+                        can_delete_messages=perms.get('can_delete_messages', False),
+                        can_change_info=perms.get('can_change_info', False),
+                        can_promote_members=perms.get('can_promote_members', False),
+                        can_manage_video_chats=perms.get('can_manage_voice_chats', False),
+                        can_post_stories=perms.get('can_post_stories', False),
+                        can_pin_messages=perms.get('can_pin_messages', False),
+                        can_invite_users=perms.get('can_invite_users', False),
+                        can_restrict_members=perms.get('can_restrict_members', False)
+                    )
+                    
+                    admins_data = get_guard_admins()
+                    admin_key = f"admins_{token[:20]}"
+                    if admin_key not in admins_data:
+                        admins_data[admin_key] = {}
+                    
+                    chat_key = str(chat_id)
+                    if chat_key not in admins_data[admin_key]:
+                        admins_data[admin_key][chat_key] = []
+                    
+                    if target_id not in admins_data[admin_key][chat_key]:
+                        admins_data[admin_key][chat_key].append(target_id)
+                        save_guard_admins(admins_data)
+                    
+                    await query.edit_message_text(f"✅ تم رفع {target_name} كمشرف بنجاح!")
+                    guard_user_states.pop(user.id, None)
+                    
+                except Exception as e:
+                    await query.edit_message_text(f"❌ فشل رفع المشرف\nالسبب: {str(e)}")
+                    guard_user_states.pop(user.id, None)
+                return
+            
+            if data.startswith("cancel_promote_"):
+                guard_user_states.pop(user.id, None)
+                await query.edit_message_text("❌ تم الغاء العملية")
+                return
         
         async def guard_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
             message = update.message
@@ -1231,6 +1965,34 @@ async def start_guard_bot(token: str, owner_id: int):
                 return
             
             if chat.type in ['group', 'supergroup']:
+                if message_text in ["الأوامر", "الاوامر", "اوامر", "أوامر", "help", "مساعدة"]:
+                    help_text = """※ بوت منع التصفية
+
+⏎ كيف يعمل البوت:
+• البوت يراقب المشرفين الذين يقومون بطرد الأعضاء
+• عند تجاوز مشرف لحد التصفية يتم تنزيله تلقائياً
+• يحمي مجموعتك من المخربين والتصفية الجماعية
+
+⏎ الأوامر المتاحة:
+
+※ أوامر المجموعات:
+• رفع مشرف @username - رفع مستخدم كمشرف
+• رفع مشرف [الرد] - رفع بالرد على رسالته
+• رفع مشرف 123456 - رفع بالايدي
+• تنزيل مشرف @username - تنزيل مشرف
+• تنزيل مشرف [الرد] - تنزيل بالرد
+• تنزيل مشرف 123456 - تنزيل بالايدي
+
+※ ملاحظات:
+• حد التصفية الافتراضي: 3 طرد
+• البوت يحتاج صلاحية رفع مشرفين
+• المالك يمكنه التحكم من الخاص
+
+※ المطور @Dev_Mido
+※ القناة @TepthonHelp"""
+                    await message.reply_text(help_text)
+                    return
+                
                 if message_text.startswith("رفع مشرف"):
                     chat_member = await context.bot.get_chat_member(chat.id, user.id)
                     if chat_member.status not in ['creator', 'administrator']:
@@ -1259,7 +2021,11 @@ async def start_guard_bot(token: str, owner_id: int):
                             else:
                                 try:
                                     target_id = int(target)
-                                    target_name = str(target_id)
+                                    try:
+                                        target_member = await context.bot.get_chat_member(chat.id, target_id)
+                                        target_name = target_member.user.first_name or str(target_id)
+                                    except:
+                                        target_name = str(target_id)
                                 except:
                                     await message.reply_text("ارسل ايدي صحيح او معرف او رد على رسالة المستخدم")
                                     return
@@ -1268,21 +2034,51 @@ async def start_guard_bot(token: str, owner_id: int):
                         await message.reply_text("رد على رسالة المستخدم او ارسل المعرف/الايدي")
                         return
                     
-                    admins_data = get_guard_admins()
-                    admin_key = f"admins_{token[:20]}"
-                    if admin_key not in admins_data:
-                        admins_data[admin_key] = {}
+                    guard_user_states[user.id] = {
+                        'promoting': True,
+                        'target_id': target_id,
+                        'target_name': target_name,
+                        'chat_id': chat.id,
+                        'promoter_id': user.id,
+                        'permissions': {
+                            'can_delete_messages': False,
+                            'can_change_info': False,
+                            'can_promote_members': False,
+                            'can_manage_voice_chats': False,
+                            'can_post_stories': False,
+                            'can_pin_messages': False,
+                            'can_invite_users': False,
+                            'can_restrict_members': False
+                        }
+                    }
                     
-                    chat_key = str(chat.id)
-                    if chat_key not in admins_data[admin_key]:
-                        admins_data[admin_key][chat_key] = []
+                    keyboard = [
+                        [
+                            InlineKeyboardButton("حذف رسائل ❌", callback_data=f"perm_delete_{chat.id}_{target_id}"),
+                            InlineKeyboardButton("تعديل معلومات ❌", callback_data=f"perm_info_{chat.id}_{target_id}")
+                        ],
+                        [
+                            InlineKeyboardButton("رفع مشرفين ❌", callback_data=f"perm_promote_{chat.id}_{target_id}"),
+                            InlineKeyboardButton("المحادثه الصوتيه ❌", callback_data=f"perm_voice_{chat.id}_{target_id}")
+                        ],
+                        [
+                            InlineKeyboardButton("الاستوريهات ❌", callback_data=f"perm_stories_{chat.id}_{target_id}"),
+                            InlineKeyboardButton("تثبيت رسائل ❌", callback_data=f"perm_pin_{chat.id}_{target_id}")
+                        ],
+                        [
+                            InlineKeyboardButton("دعوه عبر رابط ❌", callback_data=f"perm_invite_{chat.id}_{target_id}"),
+                            InlineKeyboardButton("تقييد اعضاء ❌", callback_data=f"perm_restrict_{chat.id}_{target_id}")
+                        ],
+                        [
+                            InlineKeyboardButton("✅ تأكيد الرفع", callback_data=f"confirm_promote_{chat.id}_{target_id}"),
+                            InlineKeyboardButton("❌ الغاء", callback_data=f"cancel_promote_{chat.id}_{target_id}")
+                        ]
+                    ]
                     
-                    if target_id not in admins_data[admin_key][chat_key]:
-                        admins_data[admin_key][chat_key].append(target_id)
-                        save_guard_admins(admins_data)
-                        await message.reply_text(f"✅ تم رفع {target_name} كمشرف مراقب")
-                    else:
-                        await message.reply_text("هذا المستخدم مشرف مراقب بالفعل")
+                    await message.reply_text(
+                        f"※ رفع مشرف: {target_name}\n\nيرجي اختيار صلاحيات المستخدم 📝",
+                        reply_markup=InlineKeyboardMarkup(keyboard)
+                    )
                     return
                 
                 if message_text.startswith("تنزيل مشرف"):
@@ -1313,7 +2109,11 @@ async def start_guard_bot(token: str, owner_id: int):
                             else:
                                 try:
                                     target_id = int(target)
-                                    target_name = str(target_id)
+                                    try:
+                                        target_member = await context.bot.get_chat_member(chat.id, target_id)
+                                        target_name = target_member.user.first_name or str(target_id)
+                                    except:
+                                        target_name = str(target_id)
                                 except:
                                     await message.reply_text("ارسل ايدي صحيح او معرف او رد على رسالة المستخدم")
                                     return
@@ -1375,19 +2175,47 @@ async def start_guard_bot(token: str, owner_id: int):
                             save_kick_counts(kick_data)
                             
                             if current_kicks >= kick_limit:
+                                is_bot = kicked_by.is_bot if hasattr(kicked_by, 'is_bot') else False
+                                action_success = False
+                                error_reason = ""
+                                
                                 try:
-                                    await context.bot.promote_chat_member(
-                                        chat_id=chat.id,
-                                        user_id=kicked_by.id,
-                                        can_manage_chat=False,
-                                        can_delete_messages=False,
-                                        can_restrict_members=False,
-                                        can_promote_members=False,
-                                        can_change_info=False,
-                                        can_invite_users=False,
-                                        can_pin_messages=False
-                                    )
-                                    
+                                    if is_bot:
+                                        await context.bot.ban_chat_member(
+                                            chat_id=chat.id,
+                                            user_id=kicked_by.id
+                                        )
+                                        await context.bot.unban_chat_member(
+                                            chat_id=chat.id,
+                                            user_id=kicked_by.id
+                                        )
+                                        action_success = True
+                                    else:
+                                        await context.bot.promote_chat_member(
+                                            chat_id=chat.id,
+                                            user_id=kicked_by.id,
+                                            can_manage_chat=False,
+                                            can_delete_messages=False,
+                                            can_restrict_members=False,
+                                            can_promote_members=False,
+                                            can_change_info=False,
+                                            can_invite_users=False,
+                                            can_pin_messages=False
+                                        )
+                                        action_success = True
+                                except Exception as e:
+                                    error_str = str(e).lower()
+                                    if "not enough rights" in error_str:
+                                        error_reason = "البوت ليس لديه صلاحية كافية"
+                                    elif "user is an administrator" in error_str:
+                                        error_reason = "المستخدم مشرف برتبة أعلى"
+                                    elif "can't remove" in error_str or "can't demote" in error_str:
+                                        error_reason = "لا يمكن تنزيل هذا المشرف"
+                                    else:
+                                        error_reason = "خطأ غير متوقع"
+                                    logger.error(f"Error demoting admin: {e}")
+                                
+                                if action_success:
                                     if kicked_by.id in admins_data[admin_key][chat_key]:
                                         admins_data[admin_key][chat_key].remove(kicked_by.id)
                                         save_guard_admins(admins_data)
@@ -1395,24 +2223,23 @@ async def start_guard_bot(token: str, owner_id: int):
                                     kick_data[kick_key] = 0
                                     save_kick_counts(kick_data)
                                     
+                                    action_text = "طرد" if is_bot else "تنزيل"
                                     await context.bot.send_message(
                                         chat_id=chat.id,
-                                        text=f"⚠️ تم تنزيل {kicked_by.first_name} من الاشراف\nالسبب: تجاوز حد التصفية ({kick_limit} طرد)"
+                                        text=f"⚠️ تم {action_text} {kicked_by.first_name} من الاشراف\nالسبب: تجاوز حد التصفية ({kick_limit} طرد)"
                                     )
                                     
                                     try:
                                         await context.bot.send_message(
                                             chat_id=owner_id,
-                                            text=f"⚠️ تنبيه!\n\nتم تنزيل {kicked_by.first_name} (ID: {kicked_by.id})\nمن مجموعة: {chat.title}\nالسبب: تجاوز حد التصفية ({kick_limit})"
+                                            text=f"⚠️ تنبيه!\n\nتم {action_text} {kicked_by.first_name} (ID: {kicked_by.id})\nمن مجموعة: {chat.title}\nالسبب: تجاوز حد التصفية ({kick_limit})"
                                         )
                                     except:
                                         pass
-                                    
-                                except Exception as e:
-                                    logger.error(f"Error demoting admin: {e}")
+                                else:
                                     await context.bot.send_message(
                                         chat_id=chat.id,
-                                        text=f"⚠️ {kicked_by.first_name} تجاوز حد التصفية ({current_kicks}/{kick_limit})\nلكن لا استطيع تنزيله، تأكد من صلاحياتي"
+                                        text=f"⚠️ {kicked_by.first_name} تجاوز حد التصفية ({current_kicks}/{kick_limit})\nلكن لا استطيع تنزيله\nالسبب: {error_reason}\n\n💡 اطلب من مالك المجموعة تنزيله يدوياً"
                                     )
                             else:
                                 remaining = kick_limit - current_kicks
@@ -1427,14 +2254,37 @@ async def start_guard_bot(token: str, owner_id: int):
                 return
             
             chat = my_chat_member.chat
+            old_status = my_chat_member.old_chat_member.status
             new_status = my_chat_member.new_chat_member.status
             
             guard_data = get_guard_data()
             bot_key = f"guard_{token[:20]}"
             if bot_key not in guard_data:
-                guard_data[bot_key] = {'kick_limit': 5, 'channels': [], 'groups': [], 'users': []}
+                guard_data[bot_key] = {'kick_limit': 3, 'channels': [], 'groups': [], 'users': []}
             
-            if new_status in ['administrator', 'member']:
+            if new_status == 'administrator' and old_status != 'administrator':
+                if chat.type in ['group', 'supergroup']:
+                    if str(chat.id) not in guard_data[bot_key].get('groups', []):
+                        guard_data[bot_key]['groups'] = guard_data[bot_key].get('groups', []) + [str(chat.id)]
+                    save_guard_data(guard_data)
+                    
+                    keyboard = [[InlineKeyboardButton("قناه السورس", url="https://t.me/Tepthon")]]
+                    welcome_text = """※ تم تفعيل المجموعه بنجاح سوف احمي المجموعه من المخربين 🪩
+
+القناه @Tepthon"""
+                    try:
+                        await context.bot.send_message(
+                            chat_id=chat.id,
+                            text=welcome_text,
+                            reply_markup=InlineKeyboardMarkup(keyboard)
+                        )
+                    except:
+                        pass
+                elif chat.type == 'channel':
+                    if str(chat.id) not in guard_data[bot_key].get('channels', []):
+                        guard_data[bot_key]['channels'] = guard_data[bot_key].get('channels', []) + [str(chat.id)]
+                    save_guard_data(guard_data)
+            elif new_status in ['member']:
                 if chat.type == 'channel':
                     if str(chat.id) not in guard_data[bot_key].get('channels', []):
                         guard_data[bot_key]['channels'] = guard_data[bot_key].get('channels', []) + [str(chat.id)]
@@ -1870,6 +2720,578 @@ async def start_adhkar_bot(token: str, owner_id: int):
     except Exception as e:
         logger.error(f"Error starting Adhkar bot: {e}")
 
+def get_quiz_data():
+    try:
+        with open('quiz_data.json', 'r', encoding='utf-8') as f:
+            return json.load(f)
+    except:
+        return {}
+
+def save_quiz_data(data):
+    with open('quiz_data.json', 'w', encoding='utf-8') as f:
+        json.dump(data, f, ensure_ascii=False, indent=2)
+
+async def start_quiz_bot(token: str, owner_id: int):
+    try:
+        app = Application.builder().token(token).build()
+        quiz_user_states = {}
+        
+        def get_bot_users():
+            quiz_data = get_quiz_data()
+            bot_key = f"quiz_{token[:20]}"
+            if bot_key not in quiz_data:
+                quiz_data[bot_key] = {'users': {}, 'banned': [], 'total_answers': 0}
+                save_quiz_data(quiz_data)
+            return quiz_data.get(bot_key, {}).get('users', {})
+        
+        def save_user_score(user_id, first_name, points=0, correct=0, wrong=0):
+            quiz_data = get_quiz_data()
+            bot_key = f"quiz_{token[:20]}"
+            if bot_key not in quiz_data:
+                quiz_data[bot_key] = {'users': {}, 'banned': [], 'total_answers': 0}
+            
+            user_key = str(user_id)
+            if user_key not in quiz_data[bot_key]['users']:
+                quiz_data[bot_key]['users'][user_key] = {
+                    'first_name': first_name,
+                    'points': 0,
+                    'correct': 0,
+                    'wrong': 0,
+                    'joined': datetime.now().isoformat()
+                }
+            
+            quiz_data[bot_key]['users'][user_key]['points'] += points
+            quiz_data[bot_key]['users'][user_key]['correct'] += correct
+            quiz_data[bot_key]['users'][user_key]['wrong'] += wrong
+            quiz_data[bot_key]['users'][user_key]['first_name'] = first_name
+            quiz_data[bot_key]['total_answers'] += (correct + wrong)
+            save_quiz_data(quiz_data)
+            
+            bots_data = get_bots_data()
+            if token in bots_data:
+                bots_data[token]['users_count'] = len(quiz_data[bot_key]['users'])
+                save_bots_data(bots_data)
+        
+        def get_user_score(user_id):
+            quiz_data = get_quiz_data()
+            bot_key = f"quiz_{token[:20]}"
+            return quiz_data.get(bot_key, {}).get('users', {}).get(str(user_id), {'points': 0, 'correct': 0, 'wrong': 0})
+        
+        def is_banned(user_id):
+            quiz_data = get_quiz_data()
+            bot_key = f"quiz_{token[:20]}"
+            return user_id in quiz_data.get(bot_key, {}).get('banned', [])
+        
+        def get_leaderboard():
+            users = get_bot_users()
+            sorted_users = sorted(users.items(), key=lambda x: x[1].get('points', 0), reverse=True)
+            return sorted_users[:10]
+        
+        def get_required_channel():
+            bots_data = get_bots_data()
+            return bots_data.get(token, {}).get('required_channel', REQUIRED_CHANNEL)
+        
+        async def check_quiz_subscription(user_id, bot):
+            channel = get_required_channel()
+            try:
+                member = await bot.get_chat_member(chat_id=channel, user_id=user_id)
+                return member.status in [ChatMemberStatus.MEMBER, ChatMemberStatus.ADMINISTRATOR, ChatMemberStatus.OWNER]
+            except:
+                return True
+        
+        def get_random_question():
+            return random.choice(QUIZ_QUESTIONS)
+        
+        async def quiz_start(update: Update, context: ContextTypes.DEFAULT_TYPE):
+            user = update.effective_user
+            if user is None:
+                return
+            
+            if is_banned(user.id):
+                await update.message.reply_text("انت محظور من استخدام البوت")
+                return
+            
+            is_subscribed = await check_quiz_subscription(user.id, context.bot)
+            if not is_subscribed:
+                channel = get_required_channel()
+                keyboard = [
+                    [InlineKeyboardButton("اشترك في القناة", url=f"https://t.me/{channel[1:]}")],
+                    [InlineKeyboardButton("تحقق من الاشتراك", callback_data="check_sub")]
+                ]
+                await update.message.reply_text(
+                    "يجب عليك الاشتراك في القناة اولا",
+                    reply_markup=InlineKeyboardMarkup(keyboard)
+                )
+                return
+            
+            save_user_score(user.id, user.first_name)
+            user_score = get_user_score(user.id)
+            
+            text = f"""※ مرحباً {user.first_name} في بوت الكويز
+
+⏎ نقاطك: {user_score.get('points', 0)}
+⏎ إجابات صحيحة: {user_score.get('correct', 0)}
+⏎ إجابات خاطئة: {user_score.get('wrong', 0)}
+
+اختر من القائمة:"""
+            
+            keyboard = [
+                [
+                    InlineKeyboardButton("سؤال عشوائي", callback_data="random_q"),
+                    InlineKeyboardButton("اختر تصنيف", callback_data="choose_cat")
+                ],
+                [
+                    InlineKeyboardButton("نقاطي", callback_data="my_score"),
+                    InlineKeyboardButton("المتصدرين", callback_data="leaderboard")
+                ]
+            ]
+            
+            if user.id == owner_id:
+                keyboard.append([InlineKeyboardButton("لوحة التحكم", callback_data="admin_panel")])
+            
+            await update.message.reply_text(text, reply_markup=InlineKeyboardMarkup(keyboard))
+        
+        async def quiz_callback(update: Update, context: ContextTypes.DEFAULT_TYPE):
+            query = update.callback_query
+            if query is None:
+                return
+            await query.answer()
+            
+            user = query.from_user
+            if user is None:
+                return
+            
+            data = query.data
+            
+            if data == "check_sub":
+                is_subscribed = await check_quiz_subscription(user.id, context.bot)
+                if is_subscribed:
+                    await query.message.delete()
+                    save_user_score(user.id, user.first_name)
+                    user_score = get_user_score(user.id)
+                    
+                    text = f"""※ مرحباً {user.first_name} في بوت الكويز
+
+⏎ نقاطك: {user_score.get('points', 0)}
+⏎ إجابات صحيحة: {user_score.get('correct', 0)}
+⏎ إجابات خاطئة: {user_score.get('wrong', 0)}
+
+اختر من القائمة:"""
+                    
+                    keyboard = [
+                        [
+                            InlineKeyboardButton("سؤال عشوائي", callback_data="random_q"),
+                            InlineKeyboardButton("اختر تصنيف", callback_data="choose_cat")
+                        ],
+                        [
+                            InlineKeyboardButton("نقاطي", callback_data="my_score"),
+                            InlineKeyboardButton("المتصدرين", callback_data="leaderboard")
+                        ]
+                    ]
+                    
+                    if user.id == owner_id:
+                        keyboard.append([InlineKeyboardButton("لوحة التحكم", callback_data="admin_panel")])
+                    
+                    await context.bot.send_message(chat_id=user.id, text=text, reply_markup=InlineKeyboardMarkup(keyboard))
+                else:
+                    await query.answer("لم تشترك بعد!", show_alert=True)
+                return
+            
+            if data == "random_q" or data.startswith("cat_"):
+                if data.startswith("cat_"):
+                    category = data.replace("cat_", "")
+                    questions = [q for q in QUIZ_QUESTIONS if q['category'] == category]
+                    if not questions:
+                        await query.answer("لا توجد اسئلة في هذا التصنيف", show_alert=True)
+                        return
+                    question = random.choice(questions)
+                else:
+                    question = get_random_question()
+                
+                q_index = QUIZ_QUESTIONS.index(question)
+                options = question['options']
+                
+                text = f"""※ سؤال | التصنيف: {question['category']}
+
+{question['question']}"""
+                
+                keyboard = [
+                    [
+                        InlineKeyboardButton(f"🅰️ {options[0]}", callback_data=f"ans_{q_index}_0"),
+                        InlineKeyboardButton(f"🅱️ {options[1]}", callback_data=f"ans_{q_index}_1")
+                    ],
+                    [
+                        InlineKeyboardButton(f"©️ {options[2]}", callback_data=f"ans_{q_index}_2"),
+                        InlineKeyboardButton(f"🅳️ {options[3]}", callback_data=f"ans_{q_index}_3")
+                    ]
+                ]
+                
+                await query.edit_message_text(text, reply_markup=InlineKeyboardMarkup(keyboard))
+                return
+            
+            if data.startswith("ans_"):
+                parts = data.split("_")
+                q_index = int(parts[1])
+                selected = int(parts[2])
+                
+                question = QUIZ_QUESTIONS[q_index]
+                correct_answer = question['answer']
+                
+                if selected == correct_answer:
+                    save_user_score(user.id, user.first_name, points=10, correct=1)
+                    user_score = get_user_score(user.id)
+                    text = f"""✅ إجابة صحيحة!
+
+الإجابة: {question['options'][correct_answer]}
+
++10 نقاط
+مجموع نقاطك: {user_score.get('points', 0)}"""
+                else:
+                    save_user_score(user.id, user.first_name, points=0, wrong=1)
+                    text = f"""❌ إجابة خاطئة!
+
+الإجابة الصحيحة: {question['options'][correct_answer]}
+اختيارك: {question['options'][selected]}"""
+                
+                keyboard = [
+                    [InlineKeyboardButton("سؤال جديد", callback_data="random_q")],
+                    [InlineKeyboardButton("الرئيسية", callback_data="back_main")]
+                ]
+                
+                await query.edit_message_text(text, reply_markup=InlineKeyboardMarkup(keyboard))
+                return
+            
+            if data == "choose_cat":
+                categories = list(set(q['category'] for q in QUIZ_QUESTIONS))
+                keyboard = []
+                row = []
+                for cat in categories:
+                    row.append(InlineKeyboardButton(cat, callback_data=f"cat_{cat}"))
+                    if len(row) == 2:
+                        keyboard.append(row)
+                        row = []
+                if row:
+                    keyboard.append(row)
+                keyboard.append([InlineKeyboardButton("رجوع", callback_data="back_main")])
+                
+                await query.edit_message_text("※ اختر التصنيف:", reply_markup=InlineKeyboardMarkup(keyboard))
+                return
+            
+            if data == "my_score":
+                user_score = get_user_score(user.id)
+                total = user_score.get('correct', 0) + user_score.get('wrong', 0)
+                accuracy = (user_score.get('correct', 0) / total * 100) if total > 0 else 0
+                
+                text = f"""※ إحصائياتك
+
+⏎ النقاط: {user_score.get('points', 0)}
+⏎ إجابات صحيحة: {user_score.get('correct', 0)}
+⏎ إجابات خاطئة: {user_score.get('wrong', 0)}
+⏎ نسبة النجاح: {accuracy:.1f}%"""
+                
+                keyboard = [[InlineKeyboardButton("رجوع", callback_data="back_main")]]
+                await query.edit_message_text(text, reply_markup=InlineKeyboardMarkup(keyboard))
+                return
+            
+            if data == "leaderboard":
+                leaders = get_leaderboard()
+                if not leaders:
+                    text = "※ لا يوجد متصدرين بعد"
+                else:
+                    text = "※ المتصدرين:\n\n"
+                    medals = ["🥇", "🥈", "🥉"]
+                    for i, (uid, udata) in enumerate(leaders):
+                        medal = medals[i] if i < 3 else f"{i+1}."
+                        text += f"{medal} {udata.get('first_name', 'مجهول')} - {udata.get('points', 0)} نقطة\n"
+                
+                keyboard = [[InlineKeyboardButton("رجوع", callback_data="back_main")]]
+                await query.edit_message_text(text, reply_markup=InlineKeyboardMarkup(keyboard))
+                return
+            
+            if data == "back_main":
+                user_score = get_user_score(user.id)
+                
+                text = f"""※ بوت الكويز
+
+⏎ نقاطك: {user_score.get('points', 0)}
+⏎ إجابات صحيحة: {user_score.get('correct', 0)}
+⏎ إجابات خاطئة: {user_score.get('wrong', 0)}
+
+اختر من القائمة:"""
+                
+                keyboard = [
+                    [
+                        InlineKeyboardButton("سؤال عشوائي", callback_data="random_q"),
+                        InlineKeyboardButton("اختر تصنيف", callback_data="choose_cat")
+                    ],
+                    [
+                        InlineKeyboardButton("نقاطي", callback_data="my_score"),
+                        InlineKeyboardButton("المتصدرين", callback_data="leaderboard")
+                    ]
+                ]
+                
+                if user.id == owner_id:
+                    keyboard.append([InlineKeyboardButton("لوحة التحكم", callback_data="admin_panel")])
+                
+                await query.edit_message_text(text, reply_markup=InlineKeyboardMarkup(keyboard))
+                return
+            
+            if data == "admin_panel" and user.id == owner_id:
+                quiz_data = get_quiz_data()
+                bot_key = f"quiz_{token[:20]}"
+                users_count = len(quiz_data.get(bot_key, {}).get('users', {}))
+                total_answers = quiz_data.get(bot_key, {}).get('total_answers', 0)
+                banned_count = len(quiz_data.get(bot_key, {}).get('banned', []))
+                channel = get_required_channel()
+                
+                text = f"""※ لوحة تحكم المالك
+
+⏎ عدد المستخدمين: {users_count}
+⏎ اجمالي الإجابات: {total_answers}
+⏎ المحظورين: {banned_count}
+⏎ قناة الاشتراك: {channel}"""
+                
+                keyboard = [
+                    [
+                        InlineKeyboardButton("إذاعة", callback_data="broadcast"),
+                        InlineKeyboardButton("إحصائيات", callback_data="stats")
+                    ],
+                    [
+                        InlineKeyboardButton("حظر", callback_data="ban_user"),
+                        InlineKeyboardButton("فك حظر", callback_data="unban_user")
+                    ],
+                    [InlineKeyboardButton("تغيير القناة", callback_data="change_channel")],
+                    [InlineKeyboardButton("رجوع", callback_data="back_main")]
+                ]
+                
+                await query.edit_message_text(text, reply_markup=InlineKeyboardMarkup(keyboard))
+                return
+            
+            if data == "broadcast" and user.id == owner_id:
+                quiz_user_states[user.id] = {'broadcasting': True}
+                text = "※ ارسل الرسالة التي تريد اذاعتها لجميع المستخدمين"
+                keyboard = [[InlineKeyboardButton("الغاء", callback_data="admin_panel")]]
+                await query.edit_message_text(text, reply_markup=InlineKeyboardMarkup(keyboard))
+                return
+            
+            if data == "ban_user" and user.id == owner_id:
+                quiz_user_states[user.id] = {'banning': True}
+                text = "※ ارسل ايدي المستخدم الذي تريد حظره"
+                keyboard = [[InlineKeyboardButton("الغاء", callback_data="admin_panel")]]
+                await query.edit_message_text(text, reply_markup=InlineKeyboardMarkup(keyboard))
+                return
+            
+            if data == "unban_user" and user.id == owner_id:
+                quiz_user_states[user.id] = {'unbanning': True}
+                text = "※ ارسل ايدي المستخدم الذي تريد فك حظره"
+                keyboard = [[InlineKeyboardButton("الغاء", callback_data="admin_panel")]]
+                await query.edit_message_text(text, reply_markup=InlineKeyboardMarkup(keyboard))
+                return
+            
+            if data == "change_channel" and user.id == owner_id:
+                quiz_user_states[user.id] = {'changing_channel': True}
+                text = "※ ارسل معرف القناة الجديدة (مثال: @MyChannel)"
+                keyboard = [[InlineKeyboardButton("الغاء", callback_data="admin_panel")]]
+                await query.edit_message_text(text, reply_markup=InlineKeyboardMarkup(keyboard))
+                return
+            
+            if data == "stats" and user.id == owner_id:
+                quiz_data = get_quiz_data()
+                bot_key = f"quiz_{token[:20]}"
+                users = quiz_data.get(bot_key, {}).get('users', {})
+                
+                total_points = sum(u.get('points', 0) for u in users.values())
+                total_correct = sum(u.get('correct', 0) for u in users.values())
+                total_wrong = sum(u.get('wrong', 0) for u in users.values())
+                
+                text = f"""※ إحصائيات تفصيلية
+
+⏎ عدد المستخدمين: {len(users)}
+⏎ اجمالي النقاط: {total_points}
+⏎ الإجابات الصحيحة: {total_correct}
+⏎ الإجابات الخاطئة: {total_wrong}
+⏎ عدد الأسئلة المتاحة: {len(QUIZ_QUESTIONS)}"""
+                
+                keyboard = [[InlineKeyboardButton("رجوع", callback_data="admin_panel")]]
+                await query.edit_message_text(text, reply_markup=InlineKeyboardMarkup(keyboard))
+                return
+        
+        async def quiz_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
+            message = update.message
+            if message is None:
+                return
+            user = message.from_user
+            if user is None:
+                return
+            
+            user_state = quiz_user_states.get(user.id, {})
+            message_text = message.text or ""
+            
+            if user_state.get('broadcasting') and user.id == owner_id:
+                quiz_data = get_quiz_data()
+                bot_key = f"quiz_{token[:20]}"
+                users = quiz_data.get(bot_key, {}).get('users', {})
+                
+                success = 0
+                failed = 0
+                for uid in users.keys():
+                    try:
+                        await context.bot.send_message(chat_id=int(uid), text=message_text)
+                        success += 1
+                    except:
+                        failed += 1
+                
+                await message.reply_text(f"✅ تم الارسال\nنجح: {success}\nفشل: {failed}")
+                quiz_user_states.pop(user.id, None)
+                return
+            
+            if user_state.get('banning') and user.id == owner_id:
+                try:
+                    target_id = int(message_text)
+                    quiz_data = get_quiz_data()
+                    bot_key = f"quiz_{token[:20]}"
+                    if bot_key not in quiz_data:
+                        quiz_data[bot_key] = {'users': {}, 'banned': [], 'total_answers': 0}
+                    if target_id not in quiz_data[bot_key]['banned']:
+                        quiz_data[bot_key]['banned'].append(target_id)
+                        save_quiz_data(quiz_data)
+                        await message.reply_text(f"✅ تم حظر المستخدم {target_id}")
+                    else:
+                        await message.reply_text("المستخدم محظور بالفعل")
+                except:
+                    await message.reply_text("ارسل ايدي صحيح")
+                quiz_user_states.pop(user.id, None)
+                return
+            
+            if user_state.get('unbanning') and user.id == owner_id:
+                try:
+                    target_id = int(message_text)
+                    quiz_data = get_quiz_data()
+                    bot_key = f"quiz_{token[:20]}"
+                    if target_id in quiz_data.get(bot_key, {}).get('banned', []):
+                        quiz_data[bot_key]['banned'].remove(target_id)
+                        save_quiz_data(quiz_data)
+                        await message.reply_text(f"✅ تم فك حظر المستخدم {target_id}")
+                    else:
+                        await message.reply_text("المستخدم غير محظور")
+                except:
+                    await message.reply_text("ارسل ايدي صحيح")
+                quiz_user_states.pop(user.id, None)
+                return
+            
+            if user_state.get('changing_channel') and user.id == owner_id:
+                if message_text.startswith('@'):
+                    bots_data = get_bots_data()
+                    if token in bots_data:
+                        bots_data[token]['required_channel'] = message_text
+                        save_bots_data(bots_data)
+                        await message.reply_text(f"✅ تم تغيير القناة الى {message_text}")
+                    else:
+                        await message.reply_text("حدث خطأ")
+                else:
+                    await message.reply_text("ارسل معرف القناة بشكل صحيح (مثال: @MyChannel)")
+                quiz_user_states.pop(user.id, None)
+                return
+            
+            if message_text in ["سؤال", "سوال", "question"]:
+                if is_banned(user.id):
+                    await message.reply_text("انت محظور من استخدام البوت")
+                    return
+                
+                is_subscribed = await check_quiz_subscription(user.id, context.bot)
+                if not is_subscribed:
+                    channel = get_required_channel()
+                    keyboard = [
+                        [InlineKeyboardButton("اشترك في القناة", url=f"https://t.me/{channel[1:]}")],
+                        [InlineKeyboardButton("تحقق من الاشتراك", callback_data="check_sub")]
+                    ]
+                    await message.reply_text("يجب عليك الاشتراك في القناة اولا", reply_markup=InlineKeyboardMarkup(keyboard))
+                    return
+                
+                question = get_random_question()
+                q_index = QUIZ_QUESTIONS.index(question)
+                options = question['options']
+                
+                text = f"""※ سؤال | التصنيف: {question['category']}
+
+{question['question']}"""
+                
+                keyboard = [
+                    [
+                        InlineKeyboardButton(f"🅰️ {options[0]}", callback_data=f"ans_{q_index}_0"),
+                        InlineKeyboardButton(f"🅱️ {options[1]}", callback_data=f"ans_{q_index}_1")
+                    ],
+                    [
+                        InlineKeyboardButton(f"©️ {options[2]}", callback_data=f"ans_{q_index}_2"),
+                        InlineKeyboardButton(f"🅳️ {options[3]}", callback_data=f"ans_{q_index}_3")
+                    ]
+                ]
+                
+                await message.reply_text(text, reply_markup=InlineKeyboardMarkup(keyboard))
+                return
+            
+            if message_text in ["نقاطي", "نقاط", "score"]:
+                user_score = get_user_score(user.id)
+                total = user_score.get('correct', 0) + user_score.get('wrong', 0)
+                accuracy = (user_score.get('correct', 0) / total * 100) if total > 0 else 0
+                
+                text = f"""※ إحصائياتك
+
+⏎ النقاط: {user_score.get('points', 0)}
+⏎ إجابات صحيحة: {user_score.get('correct', 0)}
+⏎ إجابات خاطئة: {user_score.get('wrong', 0)}
+⏎ نسبة النجاح: {accuracy:.1f}%"""
+                
+                await message.reply_text(text)
+                return
+            
+            if message_text in ["المتصدرين", "متصدرين", "top", "leaderboard"]:
+                leaders = get_leaderboard()
+                if not leaders:
+                    text = "※ لا يوجد متصدرين بعد"
+                else:
+                    text = "※ المتصدرين:\n\n"
+                    medals = ["🥇", "🥈", "🥉"]
+                    for i, (uid, udata) in enumerate(leaders):
+                        medal = medals[i] if i < 3 else f"{i+1}."
+                        text += f"{medal} {udata.get('first_name', 'مجهول')} - {udata.get('points', 0)} نقطة\n"
+                
+                await message.reply_text(text)
+                return
+            
+            if message_text in ["الأوامر", "الاوامر", "اوامر", "أوامر", "help", "مساعدة"]:
+                help_text = """※ بوت الكويز
+
+⏎ كيف يعمل البوت:
+• اضغط سؤال عشوائي للحصول على سؤال
+• اختر الإجابة الصحيحة من الخيارات
+• تحصل على 10 نقاط لكل إجابة صحيحة
+• تنافس مع الآخرين في لوحة المتصدرين
+
+⏎ الأوامر المتاحة:
+• سؤال - للحصول على سؤال جديد
+• نقاطي - لعرض نقاطك
+• المتصدرين - لعرض أعلى 10 لاعبين
+
+※ المطور @Dev_Mido
+※ القناة @TepthonHelp"""
+                await message.reply_text(help_text)
+                return
+        
+        app.add_handler(CommandHandler('start', quiz_start))
+        app.add_handler(CallbackQueryHandler(quiz_callback))
+        app.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, quiz_message))
+        
+        await app.initialize()
+        await app.start()
+        await app.updater.start_polling(drop_pending_updates=True)
+        
+        running_bot_apps[token] = app
+        logger.info(f"Quiz Bot started successfully")
+        
+    except Exception as e:
+        logger.error(f"Error starting Quiz bot: {e}")
+
 async def restore_bots():
     bots_data = get_bots_data()
     for token, bot_data in bots_data.items():
@@ -1884,6 +3306,8 @@ async def restore_bots():
                 asyncio.create_task(start_adhkar_bot(token, owner_id))
             elif bot_type == 'guard':
                 asyncio.create_task(start_guard_bot(token, owner_id))
+            elif bot_type == 'quiz':
+                asyncio.create_task(start_quiz_bot(token, owner_id))
             logger.info(f"Restored bot: {bot_data.get('bot_username')}")
         except Exception as e:
             logger.error(f"Error restoring bot: {e}")
@@ -1919,6 +3343,14 @@ async def inline_query(update: Update, context: ContextTypes.DEFAULT_TYPE):
             id=str(uuid.uuid4()),
             title="انشاء بوت منع تصفية",
             description="حماية مجموعتك من المخربين",
+            input_message_content=InputTextMessageContent(
+                f"※ مصنع البوتات\n\nابدأ الان وانشئ بوتك الخاص\n@{bot_me.username}"
+            )
+        ),
+        InlineQueryResultArticle(
+            id=str(uuid.uuid4()),
+            title="انشاء بوت كويز",
+            description="اسئلة ثقافية مع نظام نقاط ومتصدرين",
             input_message_content=InputTextMessageContent(
                 f"※ مصنع البوتات\n\nابدأ الان وانشئ بوتك الخاص\n@{bot_me.username}"
             )
