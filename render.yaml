@@ -8,9 +8,9 @@ services:
     envVars:
       - key: BOT_TOKEN
         value: "8560458596:AAGz2QlOIgVSt3RCYjG4U3eklOTw1HlS4_U"
-        sync: false
+        sync: true
       
       # حط مفتاح Groq API هنا - من console.groq.com
       - key: GROQ_API_KEY
         value: "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"
-        sync: false
+        sync: true
