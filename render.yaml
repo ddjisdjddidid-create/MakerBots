@@ -7,7 +7,7 @@ services:
     startCommand: python bot.py
     envVars:
       - key: BOT_TOKEN
-        value: "8560458596:AAGz2QlOIgVSt3RCYjG4U3eklOTw1HlS4_U"
+        value: "8560458596:AAG6FPNaKY5wGDpTj04faZpquSuzP0zQRwE"
         sync: true
       
       # حط مفتاح Groq API هنا - من console.groq.com
