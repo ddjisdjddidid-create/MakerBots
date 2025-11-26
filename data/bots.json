@@ -1,0 +1,38 @@
+{
+  "8054391610:AAEo1pwulYZcJK_o691_60f4IRBfK9r93QU": {
+    "type": "adhkar",
+    "owner_id": 8087077168,
+    "owner_name": "- Ahmed </>",
+    "bot_username": "HamsaTepBot",
+    "created": "2025-11-26T11:06:44.802250",
+    "active": true,
+    "required_channel": "@TepthonHelp"
+  },
+  "7761137248:AAHYgrn_eYOp3XUqM3ln0WRS0LHYTnQTO7g": {
+    "type": "ai",
+    "owner_id": 8087077168,
+    "owner_name": "- Ahmed </>",
+    "bot_username": "Julian_TepBot",
+    "created": "2025-11-26T11:13:18.664915",
+    "active": true,
+    "required_channel": "@TepthonHelp"
+  },
+  "8569008090:AAEDL_biCyG_JcXvoYcrxsKXA61HJPQ0ok8": {
+    "type": "ai",
+    "owner_id": 7460088518,
+    "owner_name": "БЛАК | 𝐁𝐋𝐀𝐂𝐊",
+    "bot_username": "A2_XA1BOT",
+    "created": "2025-11-26T11:16:49.737301",
+    "active": true,
+    "required_channel": "@TepthonHelp"
+  },
+  "8237346441:AAHm-UEalSjDw7I1gZplSXJjUGlt_sjPKzU": {
+    "type": "guard",
+    "owner_id": 8087077168,
+    "owner_name": "- Ahmed </>",
+    "bot_username": "MakerProtectionBot",
+    "created": "2025-11-26T17:00:13.419532",
+    "active": true,
+    "required_channel": "@TepthonHelp"
+  }
+}
