@@ -10,11 +10,6 @@ services:
         value: "8560458596:AAHXqXKoqJbuatXhj2QXBmDNVYa1SHTp3S8"
         sync: true
       
-      # متغير للتعرف على بيئة Render
-      - key: RENDER
-        value: "true"
-        sync: true
-      
       # حط مفتاح Groq API هنا - من console.groq.com
       - key: GROQ_API_KEY
         value: "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"
