@@ -9,3 +9,6 @@ flask
 groq
 python-telegram-bot
 telegram
+psycopg2-binary
+sqlalchemy
+pillow
