@@ -1,14 +1,18 @@
 import os
 import json
 import asyncio
-import logging
 import random
 import base64
 from datetime import datetime, timedelta
 from threading import Thread
+from io import BytesIO
 
 from flask import Flask
 from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup, Bot
+
+# فحص البيئة لمنع التشغيل المزدوج
+IS_PRODUCTION = os.environ.get('RENDER') == 'true'
+IS_REPLIT = os.environ.get('REPL_ID') is not None
 from telegram.ext import (
     Application,
     CommandHandler,
@@ -22,12 +26,14 @@ from telegram.constants import ChatMemberStatus
 from groq import Groq
 from apscheduler.schedulers.asyncio import AsyncIOScheduler
 from apscheduler.jobstores.base import JobLookupError
+from PIL import Image
 
-logging.basicConfig(
-    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
-    level=logging.INFO
+import database as db
+from logger_setup import (
+    main_logger as logger,
+    log_main, log_child, log_error, log_user_action,
+    log_bot_created, log_broadcast, log_startup, log_child_startup, log_child_error
 )
-logger = logging.getLogger(__name__)
 
 BOT_TOKEN = os.environ.get("BOT_TOKEN")
 GROQ_API_KEY = os.environ.get("GROQ_API_KEY")
@@ -349,7 +355,8 @@ def get_bot_types_keyboard():
             InlineKeyboardButton("كويز", callback_data="create_quiz")
         ],
         [
-            InlineKeyboardButton("قبول انضمام", callback_data="create_join")
+            InlineKeyboardButton("قبول انضمام", callback_data="create_join"),
+            InlineKeyboardButton("ستيكرات", callback_data="create_sticker")
         ],
         [
             InlineKeyboardButton("رجوع", callback_data="back_main")
@@ -388,12 +395,12 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
 ⏎ مرحبا بك يا {first_name}
 
 ⏎ المميزات:
-• مرحباً بك في المنطقة التي لا تعرف المستحيل 🐦‍🔥
+• مرحباً بك في المنطقة التي لا تعرف المستحيل
 • بوتات ذكيه وسريعه وامنه 
 • قم بانشاء بوتك الخاص الان ✅
 
-<blockquote>※ يمتيز البوت بالسرعه والاداء الملحوظ قم بالضغط على /start</blockquote>"""
-    await update.message.reply_text(text, reply_markup=get_main_menu_keyboard(), parse_mode="HTML")
+※ يمتيز البوت بالسرعه والاداء الملحوظ قم بالضغط على /start"""
+    await update.message.reply_text(text, reply_markup=get_main_menu_keyboard())
 
 async def handle_callback(update: Update, context: ContextTypes.DEFAULT_TYPE):
     query = update.callback_query
@@ -420,12 +427,12 @@ async def handle_callback(update: Update, context: ContextTypes.DEFAULT_TYPE):
 ⏎ مرحبا بك يا {first_name}
 
 ⏎ المميزات:
-• مرحباً بك في المنطقة التي لا تعرف المستحيل 🐦‍🔥
+• مرحباً بك في المنطقة التي لا تعرف المستحيل
 • بوتات ذكيه وسريعه وامنه 
 • قم بانشاء بوتك الخاص الان ✅
 
-<blockquote>※ يمتيز البوت بالسرعه والاداء الملحوظ قم بالضغط على /start</blockquote>"""
-            await query.edit_message_text(text, reply_markup=get_main_menu_keyboard(), parse_mode="HTML")
+※ يمتيز البوت بالسرعه والاداء الملحوظ قم بالضغط على /start"""
+            await query.edit_message_text(text, reply_markup=get_main_menu_keyboard())
         else:
             await query.answer("لم تشترك في القناة بعد", show_alert=True)
         return
@@ -686,6 +693,19 @@ async def handle_callback(update: Update, context: ContextTypes.DEFAULT_TYPE):
         await query.edit_message_text(text, reply_markup=InlineKeyboardMarkup(keyboard))
         return
     
+    if data == "create_sticker":
+        text = """※ انشاء بوت ستيكرات
+
+بوت لتحويل الصور الى ستيكرات
+ارسل صورة وسيتم تحويلها لستيكر بحجم 512x512
+
+ارسل توكن البوت الخاص بك
+احصل عليه من @BotFather"""
+        user_states[user_id] = {'creating': 'sticker'}
+        keyboard = [[InlineKeyboardButton("رجوع", callback_data="back_main")]]
+        await query.edit_message_text(text, reply_markup=InlineKeyboardMarkup(keyboard))
+        return
+    
     if data == "back_main":
         user_states.pop(user_id, None)
         text = f"""※ مرحباً بك في صانع بوتات تيبثون
@@ -693,12 +713,12 @@ async def handle_callback(update: Update, context: ContextTypes.DEFAULT_TYPE):
 ⏎ مرحبا بك يا {first_name}
 
 ⏎ المميزات:
-• مرحباً بك في المنطقة التي لا تعرف المستحيل 🐦‍🔥
+• مرحباً بك في المنطقة التي لا تعرف المستحيل
 • بوتات ذكيه وسريعه وامنه 
 • قم بانشاء بوتك الخاص الان ✅
 
-<blockquote>※ يمتيز البوت بالسرعه والاداء الملحوظ قم بالضغط على /start</blockquote>"""
-        await query.edit_message_text(text, reply_markup=get_main_menu_keyboard(), parse_mode="HTML")
+※ يمتيز البوت بالسرعه والاداء الملحوظ قم بالضغط على /start"""
+        await query.edit_message_text(text, reply_markup=get_main_menu_keyboard())
         return
 
 async def handle_token(update: Update, context: ContextTypes.DEFAULT_TYPE):
@@ -751,24 +771,23 @@ async def handle_token(update: Update, context: ContextTypes.DEFAULT_TYPE):
         
         bot_username = bot_info.username
         
-        member_data = get_member_data()
-        if str(user_id) in member_data:
-            member_data[str(user_id)]['bots_created'] = member_data[str(user_id)].get('bots_created', 0) + 1
-        save_member_data(member_data)
+        existing_bot = db.get_bot_by_username(bot_username)
+        if existing_bot:
+            await message.reply_text(f"※ هذا البوت (@{bot_username}) مصنوع من قبل!\nلا يمكن إنشاء نفس البوت مرتين")
+            return
         
-        bots_data = get_bots_data()
-        bots_data[token] = {
-            "type": creating_type,
-            "owner_id": user_id,
-            "owner_name": first_name,
-            "bot_username": bot_username,
-            "created": datetime.now().isoformat(),
-            "active": True,
-            "required_channel": REQUIRED_CHANNEL
-        }
-        save_bots_data(bots_data)
+        existing_token = db.get_bot_by_token(token)
+        if existing_token:
+            await message.reply_text("※ هذا التوكن مستخدم من قبل!")
+            return
         
-        bot_type_names = {'ai': 'ذكاء اصطناعي', 'adhkar': 'اذكار', 'guard': 'حماية من التصفية', 'quiz': 'كويز', 'join': 'قبول انضمام'}
+        db.add_member(user_id, first_name, user.username)
+        db.increment_bots_created(user_id)
+        
+        db.add_bot(token, bot_username, creating_type, user_id, REQUIRED_CHANNEL)
+        log_bot_created(creating_type, bot_username, user_id)
+        
+        bot_type_names = {'ai': 'ذكاء اصطناعي', 'adhkar': 'اذكار', 'guard': 'حماية من التصفية', 'quiz': 'كويز', 'join': 'قبول انضمام', 'sticker': 'ستيكرات'}
         
         if creating_type == 'ai':
             asyncio.create_task(start_ai_bot(token, user_id))
@@ -816,6 +835,16 @@ async def handle_token(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
 البوت يعمل الان
 اضف البوت كأدمن في قناتك او مجموعتك"""
+        elif creating_type == 'sticker':
+            asyncio.create_task(start_sticker_bot(token, user_id))
+            text = f"""※ تم انشاء بوت الستيكرات بنجاح
+
+البوت: @{bot_username}
+النوع: ستيكرات
+المالك: {first_name}
+
+البوت يعمل الان
+ارسل اي صورة لتحويلها الى ستيكر"""
         else:
             text = "نوع البوت غير معروف"
         
@@ -834,22 +863,30 @@ async def handle_token(update: Update, context: ContextTypes.DEFAULT_TYPE):
         
     except Exception as e:
         logger.error(f"Error creating bot: {e}")
+        log_error("Bot Creation", e, f"User: {user_id}, Type: {creating_type}")
         await message.reply_text("حدث خطأ اثناء انشاء البوت\nتأكد من صحة التوكن")
 
 def get_banned_maker_users():
-    try:
-        with open('banned_makers.json', 'r', encoding='utf-8') as f:
-            return json.load(f)
-    except:
-        return []
+    return db.get_all_banned_makers()
 
 def save_banned_maker_users(data):
-    with open('banned_makers.json', 'w', encoding='utf-8') as f:
-        json.dump(data, f, ensure_ascii=False, indent=2)
+    pass
+
+def is_developer_user(user_id: int, username: str = None) -> bool:
+    """Check if user is a developer (main or added)"""
+    if user_id == DEVELOPER_ID or username == DEVELOPER_USERNAME:
+        return True
+    return db.is_developer(user_id)
 
 async def send_developer_notification(context, text):
     try:
         await context.bot.send_message(chat_id=DEVELOPER_ID, text=text)
+        developers = db.get_all_developers()
+        for dev in developers:
+            try:
+                await context.bot.send_message(chat_id=dev['user_id'], text=text)
+            except:
+                pass
     except:
         pass
 
@@ -859,25 +896,18 @@ async def developer_panel(update: Update, context: ContextTypes.DEFAULT_TYPE):
     if user is None or message is None:
         return
     
-    if user.id != DEVELOPER_ID and user.username != DEVELOPER_USERNAME:
+    if not is_developer_user(user.id, user.username):
         return
     
-    bots_data = get_bots_data()
-    total_bots = len(bots_data)
-    active_bots = sum(1 for b in bots_data.values() if b.get('active', True))
-    member_data = get_member_data()
-    total_users = len(member_data)
+    stats = db.get_statistics()
+    total_bots = stats['total_bots']
+    active_bots = stats['active_bots']
+    total_users = stats['total_members']
+    total_messages = stats['total_messages']
+    most_active_bot = stats['most_active_bot']
     
-    remember_data = get_remember_data()
-    total_messages = sum(len(msgs) for msgs in remember_data.values())
-    
-    most_active_bot = None
-    max_users = 0
-    for token, bot_data in bots_data.items():
-        users_count = bot_data.get('users_count', 0)
-        if users_count > max_users:
-            max_users = users_count
-            most_active_bot = bot_data.get('bot_username', 'غير معروف')
+    developers_list = db.get_all_developers()
+    devs_count = len(developers_list) + 1
     
     text = f"""※ لوحة تحكم المطور
 
@@ -887,15 +917,18 @@ async def developer_panel(update: Update, context: ContextTypes.DEFAULT_TYPE):
 ⏎ عدد المستخدمين: {total_users}
 ⏎ عدد الرسائل: {total_messages}
 ⏎ أكثر بوت نشاط: @{most_active_bot or 'لا يوجد'}
+⏎ عدد المطورين: {devs_count}
 
 قائمة البوتات:"""
     
+    bots_list = db.get_all_bots()
     keyboard = []
-    for token, bot_data in bots_data.items():
+    for bot_data in bots_list:
         status = "🟢" if bot_data.get('active', True) else "🔴"
         bot_name = bot_data.get('bot_username', 'غير معروف')
-        bot_type_map = {'ai': 'ذكاء', 'adhkar': 'اذكار', 'guard': 'حماية'}
-        bot_type = bot_type_map.get(bot_data['type'], 'غير معروف')
+        bot_type_map = {'ai': 'ذكاء', 'adhkar': 'اذكار', 'guard': 'حماية', 'quiz': 'كويز', 'join_request': 'قبول', 'sticker': 'ستيكر'}
+        bot_type = bot_type_map.get(bot_data.get('bot_type', ''), 'غير معروف')
+        token = bot_data.get('token', '')
         keyboard.append([
             InlineKeyboardButton(
                 f"{status} @{bot_name} - {bot_type}",
@@ -909,6 +942,11 @@ async def developer_panel(update: Update, context: ContextTypes.DEFAULT_TYPE):
     ])
     keyboard.append([InlineKeyboardButton("اذاعة متقدمة 📢", callback_data="advanced_broadcast")])
     keyboard.append([InlineKeyboardButton("اذاعة للجميع 📢", callback_data="broadcast_all")])
+    keyboard.append([
+        InlineKeyboardButton("إضافة مطور ➕", callback_data="dev_add_developer"),
+        InlineKeyboardButton("إزالة مطور ➖", callback_data="dev_remove_developer")
+    ])
+    keyboard.append([InlineKeyboardButton("اشتراك وهمي 📌", callback_data="dev_fake_sub")])
     
     await message.reply_text(text, reply_markup=InlineKeyboardMarkup(keyboard))
 
@@ -921,7 +959,7 @@ async def handle_developer_callback(update: Update, context: ContextTypes.DEFAUL
     if user is None:
         return False
     
-    if user.id != DEVELOPER_ID and user.username != DEVELOPER_USERNAME:
+    if not is_developer_user(user.id, user.username):
         return False
     
     data = query.data
@@ -1222,6 +1260,125 @@ async def handle_developer_callback(update: Update, context: ContextTypes.DEFAUL
         )
         return True
     
+    if data == "dev_add_developer":
+        await query.answer()
+        user_states[user.id] = {'adding_developer': True}
+        keyboard = [[InlineKeyboardButton("الغاء", callback_data="dev_panel")]]
+        await query.edit_message_text(
+            "※ إضافة مطور جديد\n\nارسل ايدي المستخدم الذي تريد إضافته كمطور:",
+            reply_markup=InlineKeyboardMarkup(keyboard)
+        )
+        return True
+    
+    if data == "dev_remove_developer":
+        await query.answer()
+        developers = db.get_all_developers()
+        if not developers:
+            await query.answer("لا يوجد مطورين مضافين", show_alert=True)
+            return True
+        
+        keyboard = []
+        for dev in developers:
+            dev_id = dev['user_id']
+            dev_username = dev.get('username', 'غير معروف')
+            keyboard.append([InlineKeyboardButton(
+                f"❌ {dev_id} - @{dev_username}",
+                callback_data=f"remove_dev_{dev_id}"
+            )])
+        keyboard.append([InlineKeyboardButton("رجوع", callback_data="dev_panel")])
+        await query.edit_message_text(
+            "※ إزالة مطور\n\nاختر المطور الذي تريد إزالته:",
+            reply_markup=InlineKeyboardMarkup(keyboard)
+        )
+        return True
+    
+    if data.startswith("remove_dev_"):
+        await query.answer()
+        dev_id = int(data.replace("remove_dev_", ""))
+        if db.remove_developer(dev_id):
+            await query.answer(f"✅ تم إزالة المطور {dev_id}", show_alert=True)
+        else:
+            await query.answer("❌ حدث خطأ", show_alert=True)
+        keyboard = [[InlineKeyboardButton("رجوع للوحة التحكم", callback_data="dev_panel")]]
+        await query.edit_message_text("تم إزالة المطور", reply_markup=InlineKeyboardMarkup(keyboard))
+        return True
+    
+    if data == "dev_fake_sub":
+        await query.answer()
+        bots_list = db.get_all_bots()
+        keyboard = []
+        for bot_data in bots_list:
+            bot_name = bot_data.get('bot_username', 'غير معروف')
+            token = bot_data.get('token', '')
+            fake_sub = db.get_fake_sub(token)
+            status = "✅" if fake_sub and fake_sub.get('enabled') else "❌"
+            keyboard.append([InlineKeyboardButton(
+                f"{status} @{bot_name}",
+                callback_data=f"fake_sub_{token[:25]}"
+            )])
+        keyboard.append([InlineKeyboardButton("رجوع", callback_data="dev_panel")])
+        await query.edit_message_text(
+            "※ الاشتراك الوهمي\n\nاختر البوت لتفعيل/تعطيل الاشتراك الوهمي:",
+            reply_markup=InlineKeyboardMarkup(keyboard)
+        )
+        return True
+    
+    if data.startswith("fake_sub_"):
+        await query.answer()
+        token_prefix = data.replace("fake_sub_", "")
+        bots_list = db.get_all_bots()
+        selected_bot = None
+        for bot in bots_list:
+            if bot['token'].startswith(token_prefix):
+                selected_bot = bot
+                break
+        
+        if selected_bot:
+            user_states[user.id] = {'setting_fake_sub': True, 'fake_sub_token': selected_bot['token']}
+            fake_sub = db.get_fake_sub(selected_bot['token'])
+            current_msg = fake_sub.get('message', 'غير محدد') if fake_sub else 'غير محدد'
+            status = "مفعل ✅" if fake_sub and fake_sub.get('enabled') else "معطل ❌"
+            keyboard = [
+                [InlineKeyboardButton("تفعيل/تعطيل", callback_data=f"toggle_fake_{selected_bot['token'][:25]}")],
+                [InlineKeyboardButton("تغيير الرسالة", callback_data=f"change_fake_msg_{selected_bot['token'][:25]}")],
+                [InlineKeyboardButton("رجوع", callback_data="dev_fake_sub")]
+            ]
+            await query.edit_message_text(
+                f"※ الاشتراك الوهمي - @{selected_bot['bot_username']}\n\nالحالة: {status}\nالرسالة: {current_msg}",
+                reply_markup=InlineKeyboardMarkup(keyboard)
+            )
+        return True
+    
+    if data.startswith("toggle_fake_"):
+        await query.answer()
+        token_prefix = data.replace("toggle_fake_", "")
+        bots_list = db.get_all_bots()
+        for bot in bots_list:
+            if bot['token'].startswith(token_prefix):
+                fake_sub = db.get_fake_sub(bot['token'])
+                new_enabled = not (fake_sub and fake_sub.get('enabled'))
+                current_msg = fake_sub.get('message', 'قم بالانضمام لاستخدام البوت') if fake_sub else 'قم بالانضمام لاستخدام البوت'
+                db.set_fake_sub(bot['token'], new_enabled, current_msg)
+                status = "تم التفعيل ✅" if new_enabled else "تم التعطيل ❌"
+                await query.answer(status, show_alert=True)
+                break
+        return True
+    
+    if data.startswith("change_fake_msg_"):
+        await query.answer()
+        token_prefix = data.replace("change_fake_msg_", "")
+        bots_list = db.get_all_bots()
+        for bot in bots_list:
+            if bot['token'].startswith(token_prefix):
+                user_states[user.id] = {'changing_fake_msg': True, 'fake_sub_token': bot['token']}
+                keyboard = [[InlineKeyboardButton("الغاء", callback_data="dev_fake_sub")]]
+                await query.edit_message_text(
+                    "※ تغيير رسالة الاشتراك الوهمي\n\nارسل الرسالة الجديدة:",
+                    reply_markup=InlineKeyboardMarkup(keyboard)
+                )
+                break
+        return True
+    
     return False
 
 async def handle_developer_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
@@ -1230,7 +1387,7 @@ async def handle_developer_message(update: Update, context: ContextTypes.DEFAULT
     if user is None or message is None:
         return False
     
-    if user.id != DEVELOPER_ID and user.username != DEVELOPER_USERNAME:
+    if not is_developer_user(user.id, user.username):
         return False
     
     user_state = user_states.get(user.id, {})
@@ -1238,10 +1395,8 @@ async def handle_developer_message(update: Update, context: ContextTypes.DEFAULT
     if user_state.get('dev_banning'):
         try:
             ban_id = int(message.text.strip())
-            banned = get_banned_maker_users()
-            if ban_id not in banned:
-                banned.append(ban_id)
-                save_banned_maker_users(banned)
+            if not db.is_maker_banned(ban_id):
+                db.ban_maker(ban_id, user.id)
                 await message.reply_text(f"✅ تم حظر المستخدم {ban_id} من صنع بوتات")
             else:
                 await message.reply_text("هذا المستخدم محظور بالفعل")
@@ -1253,10 +1408,8 @@ async def handle_developer_message(update: Update, context: ContextTypes.DEFAULT
     if user_state.get('dev_unbanning'):
         try:
             unban_id = int(message.text.strip())
-            banned = get_banned_maker_users()
-            if unban_id in banned:
-                banned.remove(unban_id)
-                save_banned_maker_users(banned)
+            if db.is_maker_banned(unban_id):
+                db.unban_maker(unban_id)
                 await message.reply_text(f"✅ تم فك حظر المستخدم {unban_id}")
             else:
                 await message.reply_text("هذا المستخدم غير محظور")
@@ -1265,40 +1418,69 @@ async def handle_developer_message(update: Update, context: ContextTypes.DEFAULT
         user_states.pop(user.id, None)
         return True
     
+    if user_state.get('adding_developer'):
+        try:
+            dev_id = int(message.text.strip())
+            if db.is_developer(dev_id):
+                await message.reply_text("هذا المستخدم مطور بالفعل")
+            else:
+                db.add_developer(dev_id, None, user.id)
+                await message.reply_text(f"✅ تم إضافة المطور {dev_id}")
+                log_main(f"New developer added: {dev_id} by {user.id}")
+        except ValueError:
+            await message.reply_text("ارسل ايدي صحيح")
+        user_states.pop(user.id, None)
+        return True
+    
+    if user_state.get('changing_fake_msg'):
+        token = user_state.get('fake_sub_token')
+        if token:
+            fake_sub = db.get_fake_sub(token)
+            enabled = fake_sub.get('enabled', False) if fake_sub else False
+            db.set_fake_sub(token, enabled, message.text)
+            await message.reply_text("✅ تم تغيير الرسالة بنجاح")
+        user_states.pop(user.id, None)
+        return True
+    
     if user_state.get('dev_broadcasting'):
-        member_data = get_member_data()
+        members = db.get_all_members()
         success = 0
         failed = 0
-        for uid in member_data.keys():
+        for member in members:
             try:
-                await context.bot.send_message(chat_id=int(uid), text=message.text)
+                await context.bot.send_message(chat_id=member['user_id'], text=message.text)
                 success += 1
             except:
                 failed += 1
         await message.reply_text(f"✅ تم الإرسال\nنجح: {success}\nفشل: {failed}")
+        log_broadcast("Main Bot", success, failed)
         user_states.pop(user.id, None)
         return True
     
     if user_state.get('advanced_broadcasting'):
         selected_bots = user_state.get('selected_bots', [])
-        bots_data = get_bots_data()
+        bots_list = db.get_all_bots()
         
-        all_users = set()
-        for token, bot_data in bots_data.items():
+        total_success = 0
+        total_failed = 0
+        for bot_data in bots_list:
+            token = bot_data.get('token', '')
             if token[:25] in selected_bots:
-                bot_users = bot_data.get('users', [])
-                if isinstance(bot_users, list):
-                    all_users.update(bot_users)
+                bot_users = db.get_bot_users(token)
+                try:
+                    child_bot = Bot(token=token)
+                    for bot_user in bot_users:
+                        if not bot_user.get('banned'):
+                            try:
+                                await child_bot.send_message(chat_id=bot_user['user_id'], text=message.text)
+                                total_success += 1
+                            except:
+                                total_failed += 1
+                    log_broadcast("Advanced", total_success, total_failed, bot_data.get('bot_username'))
+                except Exception as e:
+                    log_error("Advanced Broadcast", e, f"Token: {token[:20]}...")
         
-        success = 0
-        failed = 0
-        for uid in all_users:
-            try:
-                await context.bot.send_message(chat_id=int(uid), text=message.text)
-                success += 1
-            except:
-                failed += 1
-        await message.reply_text(f"✅ تم الإرسال للبوتات المحددة\nنجح: {success}\nفشل: {failed}")
+        await message.reply_text(f"✅ تم الإرسال من البوتات الفرعية\nنجح: {total_success}\nفشل: {total_failed}")
         user_states.pop(user.id, None)
         return True
     
@@ -4014,12 +4196,296 @@ async def start_join_request_bot(token: str, owner_id: int):
     except Exception as e:
         logger.error(f"Error starting Join Request bot: {e}")
 
+async def start_sticker_bot(token: str, owner_id: int):
+    try:
+        from io import BytesIO
+        app = Application.builder().token(token).build()
+        sticker_user_states = {}
+        
+        async def sticker_start(update: Update, context: ContextTypes.DEFAULT_TYPE):
+            user = update.effective_user
+            message = update.message
+            if user is None or message is None:
+                return
+            first_name = user.first_name or "صديقي"
+            
+            bot_data = db.get_bot_by_token(token)
+            owner_name = bot_data.get('owner_name', first_name) if bot_data else first_name
+            
+            db.add_bot_user(token, user.id, first_name, user.username)
+            
+            fake_sub = db.get_fake_sub(token)
+            if fake_sub and fake_sub.get('enabled'):
+                fake_msg = fake_sub.get('message', 'مرحباً بك! تابعنا على @TepthonHelp')
+                await message.reply_text(fake_msg)
+            
+            if user.id == owner_id or is_developer_user(user.id, user.username):
+                keyboard = [
+                    [
+                        InlineKeyboardButton("الاحصائيات 📊", callback_data="sticker_stats"),
+                        InlineKeyboardButton("لوحة الادمن 🎖️", callback_data="sticker_admin")
+                    ]
+                ]
+                
+                text = f"""※ بوت الستيكرات
+
+⏎ مرحبا بك يا {first_name}
+⏎ ارسل صورة لتحويلها الى ستيكر
+⏎ سيتم تحويلها لحجم 512x512
+
+※ المطور: {owner_name}"""
+            else:
+                keyboard = []
+                text = f"""※ بوت الستيكرات
+
+⏎ مرحبا بك يا {first_name}
+⏎ ارسل صورة لتحويلها الى ستيكر
+
+※ المطور: {owner_name}"""
+            
+            await message.reply_text(text, reply_markup=InlineKeyboardMarkup(keyboard) if keyboard else None)
+        
+        async def sticker_callback(update: Update, context: ContextTypes.DEFAULT_TYPE):
+            query = update.callback_query
+            if query is None:
+                return
+            await query.answer()
+            user = query.from_user
+            if user is None:
+                return
+            data = query.data
+            first_name = user.first_name or "صديقي"
+            
+            if data == "sticker_stats":
+                if user.id != owner_id and not is_developer_user(user.id, user.username):
+                    await query.answer("للمالك فقط", show_alert=True)
+                    return
+                
+                bot_data = db.get_bot_by_token(token)
+                bot_users = db.get_bot_users(token)
+                total_users = len(bot_users)
+                active_users = len([u for u in bot_users if not u.get('banned')])
+                bot_stats = db.get_bot_stats(token)
+                total_messages = bot_stats.get('messages', 0) if bot_stats else 0
+                
+                text = f"""※ احصائيات البوت
+
+⏎ المستخدمين: {total_users}
+⏎ النشطين: {active_users}
+⏎ الرسائل: {total_messages}"""
+                
+                keyboard = [[InlineKeyboardButton("رجوع", callback_data="sticker_back")]]
+                await query.edit_message_text(text, reply_markup=InlineKeyboardMarkup(keyboard))
+                return
+            
+            if data == "sticker_admin":
+                if user.id != owner_id and not is_developer_user(user.id, user.username):
+                    await query.answer("للمالك فقط", show_alert=True)
+                    return
+                
+                keyboard = [
+                    [InlineKeyboardButton("اذاعة للمستخدمين 📢", callback_data="sticker_broadcast")],
+                    [InlineKeyboardButton("حظر مستخدم 🚫", callback_data="sticker_ban")],
+                    [InlineKeyboardButton("فك حظر مستخدم ✅", callback_data="sticker_unban")],
+                    [InlineKeyboardButton("رجوع", callback_data="sticker_back")]
+                ]
+                await query.edit_message_text(
+                    "※ لوحة الادمن\n\nاختر من القائمة",
+                    reply_markup=InlineKeyboardMarkup(keyboard)
+                )
+                return
+            
+            if data == "sticker_broadcast":
+                if user.id != owner_id and not is_developer_user(user.id, user.username):
+                    await query.answer("للمالك فقط", show_alert=True)
+                    return
+                sticker_user_states[user.id] = {'broadcasting': True}
+                keyboard = [[InlineKeyboardButton("الغاء", callback_data="sticker_back")]]
+                await query.edit_message_text(
+                    "※ اذاعة\n\nارسل الرسالة التي تريد ارسالها:",
+                    reply_markup=InlineKeyboardMarkup(keyboard)
+                )
+                return
+            
+            if data == "sticker_ban":
+                if user.id != owner_id and not is_developer_user(user.id, user.username):
+                    await query.answer("للمالك فقط", show_alert=True)
+                    return
+                sticker_user_states[user.id] = {'banning': True}
+                keyboard = [[InlineKeyboardButton("الغاء", callback_data="sticker_back")]]
+                await query.edit_message_text(
+                    "※ حظر مستخدم\n\nارسل ايدي المستخدم:",
+                    reply_markup=InlineKeyboardMarkup(keyboard)
+                )
+                return
+            
+            if data == "sticker_unban":
+                if user.id != owner_id and not is_developer_user(user.id, user.username):
+                    await query.answer("للمالك فقط", show_alert=True)
+                    return
+                sticker_user_states[user.id] = {'unbanning': True}
+                keyboard = [[InlineKeyboardButton("الغاء", callback_data="sticker_back")]]
+                await query.edit_message_text(
+                    "※ فك حظر مستخدم\n\nارسل ايدي المستخدم:",
+                    reply_markup=InlineKeyboardMarkup(keyboard)
+                )
+                return
+            
+            if data == "sticker_back":
+                sticker_user_states.pop(user.id, None)
+                bot_data = db.get_bot_by_token(token)
+                owner_name = bot_data.get('owner_name', first_name) if bot_data else first_name
+                
+                if user.id == owner_id or is_developer_user(user.id, user.username):
+                    keyboard = [
+                        [
+                            InlineKeyboardButton("الاحصائيات 📊", callback_data="sticker_stats"),
+                            InlineKeyboardButton("لوحة الادمن 🎖️", callback_data="sticker_admin")
+                        ]
+                    ]
+                    
+                    text = f"""※ بوت الستيكرات
+
+⏎ مرحبا بك يا {first_name}
+⏎ ارسل صورة لتحويلها الى ستيكر
+⏎ سيتم تحويلها لحجم 512x512
+
+※ المطور: {owner_name}"""
+                else:
+                    keyboard = []
+                    text = f"""※ بوت الستيكرات
+
+⏎ مرحبا بك يا {first_name}
+⏎ ارسل صورة لتحويلها الى ستيكر
+
+※ المطور: {owner_name}"""
+                
+                await query.edit_message_text(text, reply_markup=InlineKeyboardMarkup(keyboard) if keyboard else None)
+                return
+        
+        async def sticker_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
+            message = update.message
+            if message is None:
+                return
+            user = message.from_user
+            if user is None:
+                return
+            
+            bot_user = db.get_bot_user(token, user.id)
+            if bot_user and bot_user.get('banned'):
+                await message.reply_text("⛔ انت محظور من استخدام هذا البوت")
+                return
+            
+            user_state = sticker_user_states.get(user.id, {})
+            
+            if user_state.get('broadcasting') and (user.id == owner_id or is_developer_user(user.id, user.username)):
+                bot_users = db.get_bot_users(token)
+                success = 0
+                failed = 0
+                child_bot = Bot(token=token)
+                for bot_user in bot_users:
+                    if not bot_user.get('banned'):
+                        try:
+                            await child_bot.send_message(chat_id=bot_user['user_id'], text=message.text)
+                            success += 1
+                        except:
+                            failed += 1
+                await message.reply_text(f"✅ تم الإرسال\nنجح: {success}\nفشل: {failed}")
+                sticker_user_states.pop(user.id, None)
+                log_broadcast("Sticker Bot", success, failed)
+                return
+            
+            if user_state.get('banning') and (user.id == owner_id or is_developer_user(user.id, user.username)):
+                try:
+                    ban_id = int(message.text.strip())
+                    db.ban_bot_user(token, ban_id)
+                    await message.reply_text(f"✅ تم حظر المستخدم {ban_id}")
+                except ValueError:
+                    await message.reply_text("ارسل ايدي صحيح")
+                sticker_user_states.pop(user.id, None)
+                return
+            
+            if user_state.get('unbanning') and (user.id == owner_id or is_developer_user(user.id, user.username)):
+                try:
+                    unban_id = int(message.text.strip())
+                    db.unban_bot_user(token, unban_id)
+                    await message.reply_text(f"✅ تم فك حظر المستخدم {unban_id}")
+                except ValueError:
+                    await message.reply_text("ارسل ايدي صحيح")
+                sticker_user_states.pop(user.id, None)
+                return
+            
+            db.increment_message_count(token)
+        
+        async def handle_photo(update: Update, context: ContextTypes.DEFAULT_TYPE):
+            message = update.message
+            if message is None or message.photo is None:
+                return
+            user = message.from_user
+            if user is None:
+                return
+            
+            bot_user = db.get_bot_user(token, user.id)
+            if bot_user and bot_user.get('banned'):
+                await message.reply_text("⛔ انت محظور من استخدام هذا البوت")
+                return
+            
+            try:
+                await message.reply_text("※ جاري تحويل الصورة...")
+                
+                photo = message.photo[-1]
+                file = await context.bot.get_file(photo.file_id)
+                photo_bytes = await file.download_as_bytearray()
+                
+                from PIL import Image
+                img = Image.open(BytesIO(photo_bytes))
+                
+                width, height = img.size
+                max_dim = max(width, height)
+                scale = 512 / max_dim
+                new_width = int(width * scale)
+                new_height = int(height * scale)
+                img = img.resize((new_width, new_height), Image.LANCZOS)
+                
+                new_img = Image.new('RGBA', (512, 512), (0, 0, 0, 0))
+                offset = ((512 - new_width) // 2, (512 - new_height) // 2)
+                if img.mode != 'RGBA':
+                    img = img.convert('RGBA')
+                new_img.paste(img, offset)
+                
+                sticker_io = BytesIO()
+                new_img.save(sticker_io, format='WEBP')
+                sticker_io.seek(0)
+                
+                await message.reply_sticker(sticker=sticker_io)
+                db.increment_message_count(token)
+                
+            except Exception as e:
+                logger.error(f"Error converting photo to sticker: {e}")
+                await message.reply_text("حدث خطأ اثناء تحويل الصورة")
+        
+        app.add_handler(CommandHandler('start', sticker_start))
+        app.add_handler(CallbackQueryHandler(sticker_callback))
+        app.add_handler(MessageHandler(filters.PHOTO, handle_photo))
+        app.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, sticker_message))
+        
+        await app.initialize()
+        await app.start()
+        await app.updater.start_polling(drop_pending_updates=True)
+        
+        running_bot_apps[token] = app
+        logger.info(f"Sticker Bot started successfully")
+        
+    except Exception as e:
+        logger.error(f"Error starting Sticker bot: {e}")
+
 async def restore_bots():
-    bots_data = get_bots_data()
-    for token, bot_data in bots_data.items():
+    bots_list = db.get_all_bots()
+    for bot_data in bots_list:
         if not bot_data.get('active', True):
             continue
         try:
+            token = bot_data.get('token')
             bot_type = bot_data.get('type')
             owner_id = bot_data.get('owner_id')
             if bot_type == 'ai':
@@ -4032,6 +4498,8 @@ async def restore_bots():
                 asyncio.create_task(start_quiz_bot(token, owner_id))
             elif bot_type == 'join':
                 asyncio.create_task(start_join_request_bot(token, owner_id))
+            elif bot_type == 'sticker':
+                asyncio.create_task(start_sticker_bot(token, owner_id))
             logger.info(f"Restored bot: {bot_data.get('bot_username')}")
         except Exception as e:
             logger.error(f"Error restoring bot: {e}")
@@ -4105,6 +4573,24 @@ def run_flask():
 async def main():
     if not BOT_TOKEN:
         logger.error("BOT_TOKEN not found in environment variables")
+        return
+    
+    # منع التشغيل على Replit لتجنب التعارض مع Render
+    if IS_REPLIT and not IS_PRODUCTION:
+        logger.warning("⚠️ البوت متوقف على Replit - يعمل على Render فقط")
+        logger.warning("لو عايز تشغله هنا، أوقفه على Render الأول")
+        print("\n" + "="*50)
+        print("⚠️  البوت الرئيسي لا يعمل على Replit")
+        print("📍 البوت يعمل على Render فقط لتجنب التعارض")
+        print("="*50 + "\n")
+        
+        # بدء Flask فقط لإبقاء Replit نشط
+        flask_thread = Thread(target=run_flask, daemon=True)
+        flask_thread.start()
+        
+        # انتظار لا نهائي
+        while True:
+            await asyncio.sleep(3600)
         return
     
     ensure_data_dir()
