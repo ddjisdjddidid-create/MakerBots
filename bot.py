@@ -324,16 +324,17 @@ def get_subscription_keyboard():
     return InlineKeyboardMarkup(keyboard)
 
 SUPPORT_GROUP = "@TepthonHelp"
+UPDATES_CHANNEL = "@Tepthon"
 
 def get_main_menu_keyboard():
     keyboard = [
+        [InlineKeyboardButton("معلومات اكثر عن البوت 💡", callback_data="bot_info")],
         [
-            InlineKeyboardButton("انشاء بوت", callback_data="create_bot"),
-            InlineKeyboardButton("بوتاتك", callback_data="my_bots")
+            InlineKeyboardButton("بوتاتي المصنوعه 🤖", callback_data="my_bots"),
+            InlineKeyboardButton("صنع بوت جديد", callback_data="create_bot")
         ],
-        [
-            InlineKeyboardButton("مجموعه الدعم", url=f"https://t.me/{SUPPORT_GROUP[1:]}")
-        ]
+        [InlineKeyboardButton("الاشتراك المدفوع للبوتات", callback_data="premium_sub")],
+        [InlineKeyboardButton("قناه تحديثات الصانع", url=f"https://t.me/{UPDATES_CHANNEL[1:]}")]
     ]
     return InlineKeyboardMarkup(keyboard)
 
@@ -346,6 +347,9 @@ def get_bot_types_keyboard():
         [
             InlineKeyboardButton("منع تصفيه", callback_data="create_guard"),
             InlineKeyboardButton("كويز", callback_data="create_quiz")
+        ],
+        [
+            InlineKeyboardButton("قبول انضمام", callback_data="create_join")
         ],
         [
             InlineKeyboardButton("رجوع", callback_data="back_main")
@@ -379,18 +383,17 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
         }
         save_member_data(member_data)
     
-    text = f"""※ مرحباً بك في صانع تيبثون
+    text = f"""※ مرحباً بك في صانع بوتات تيبثون
 
-⏎ أنشئ بوتك الآن بسهولة 
-اختر القالب، أضف التوكن، وسيكون البوت جاهزاً للعمل 🏪
+⏎ مرحبا بك يا {first_name}
 
 ⏎ المميزات:
-• بدون الحاجة إلى أكواد أو تعقيدات
-• قوالب ذكية وجاهزة
-• استضافة آمنة وفورية
+• مرحباً بك في المنطقة التي لا تعرف المستحيل 🐦‍🔥
+• بوتات ذكيه وسريعه وامنه 
+• قم بانشاء بوتك الخاص الان ✅
 
-※ ابدأ الآن وصمّم بوتك في أقل من نصف دقيقة!"""
-    await update.message.reply_text(text, reply_markup=get_main_menu_keyboard())
+<blockquote>※ يمتيز البوت بالسرعه والاداء الملحوظ قم بالضغط على /start</blockquote>"""
+    await update.message.reply_text(text, reply_markup=get_main_menu_keyboard(), parse_mode="HTML")
 
 async def handle_callback(update: Update, context: ContextTypes.DEFAULT_TYPE):
     query = update.callback_query
@@ -412,20 +415,55 @@ async def handle_callback(update: Update, context: ContextTypes.DEFAULT_TYPE):
     if data == "check_sub":
         is_subscribed = await check_subscription(user_id, context.bot)
         if is_subscribed:
-            text = f"""※ مرحباً بك في صانع تيبثون
+            text = f"""※ مرحباً بك في صانع بوتات تيبثون
 
-⏎ أنشئ بوتك الآن بسهولة 
-اختر القالب، أضف التوكن، وسيكون البوت جاهزاً للعمل 🏪
+⏎ مرحبا بك يا {first_name}
 
 ⏎ المميزات:
-• بدون الحاجة إلى أكواد أو تعقيدات
-• قوالب ذكية وجاهزة
-• استضافة آمنة وفورية
+• مرحباً بك في المنطقة التي لا تعرف المستحيل 🐦‍🔥
+• بوتات ذكيه وسريعه وامنه 
+• قم بانشاء بوتك الخاص الان ✅
 
-※ ابدأ الآن وصمّم بوتك في أقل من نصف دقيقة!"""
-            await query.edit_message_text(text, reply_markup=get_main_menu_keyboard())
+<blockquote>※ يمتيز البوت بالسرعه والاداء الملحوظ قم بالضغط على /start</blockquote>"""
+            await query.edit_message_text(text, reply_markup=get_main_menu_keyboard(), parse_mode="HTML")
         else:
             await query.answer("لم تشترك في القناة بعد", show_alert=True)
+        return
+    
+    if data == "bot_info":
+        text = """※ معلومات عن البوت
+
+⏎ صانع بوتات تيبثون هو منصة متكاملة لإنشاء بوتات تليجرام بدون أي خبرة برمجية
+
+⏎ أنواع البوتات المتاحة:
+• بوت ذكاء اصطناعي - محادثة ذكية مع دعم تحليل الصور
+• بوت أذكار - نشر الأذكار في القنوات والمجموعات
+• بوت منع تصفية - حماية المجموعات من المخربين
+• بوت كويز - أسئلة ثقافية مع نظام نقاط
+• بوت قبول انضمام - قبول طلبات الانضمام تلقائياً
+
+⏎ المميزات:
+• سرعة فائقة في الأداء
+• استضافة آمنة ومجانية
+• لوحة تحكم كاملة لكل بوت
+• دعم فني متواصل"""
+        keyboard = [[InlineKeyboardButton("رجوع", callback_data="back_main")]]
+        await query.edit_message_text(text, reply_markup=InlineKeyboardMarkup(keyboard))
+        return
+    
+    if data == "premium_sub":
+        text = """※ الاشتراك المدفوع للبوتات
+
+⏎ المميزات الحصرية:
+• بوتات بدون حدود للاستخدام
+• أولوية في الدعم الفني
+• ميزات متقدمة حصرية
+• سرعة أعلى في الأداء
+
+⏎ للاشتراك تواصل مع المطور:
+@Dev_Mido"""
+        keyboard = [[InlineKeyboardButton("رجوع", callback_data="back_main")]]
+        await query.edit_message_text(text, reply_markup=InlineKeyboardMarkup(keyboard))
         return
     
     if data == "create_bot":
@@ -433,7 +471,9 @@ async def handle_callback(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
 ⏎ اذكار - بوت لنشر الاذكار في القنوات والمجموعات
 ⏎ ذكاء اصطناعي - بوت محادثة ذكي
-⏎ منع تصفيه - بوت حماية المجموعات"""
+⏎ منع تصفيه - بوت حماية المجموعات
+⏎ كويز - بوت اسئلة ثقافية مع نظام نقاط
+⏎ قبول انضمام - قبول طلبات الانضمام تلقائياً"""
         await query.edit_message_text(text, reply_markup=get_bot_types_keyboard())
         return
     
@@ -633,20 +673,32 @@ async def handle_callback(update: Update, context: ContextTypes.DEFAULT_TYPE):
         await query.edit_message_text(text, reply_markup=InlineKeyboardMarkup(keyboard))
         return
     
+    if data == "create_join":
+        text = """※ انشاء بوت قبول انضمام
+
+بوت لقبول طلبات الانضمام تلقائياً
+للقنوات والمجموعات بسرعة خيالية
+
+ارسل توكن البوت الخاص بك
+احصل عليه من @BotFather"""
+        user_states[user_id] = {'creating': 'join'}
+        keyboard = [[InlineKeyboardButton("رجوع", callback_data="back_main")]]
+        await query.edit_message_text(text, reply_markup=InlineKeyboardMarkup(keyboard))
+        return
+    
     if data == "back_main":
         user_states.pop(user_id, None)
-        text = f"""※ مرحباً بك في صانع تيبثون
+        text = f"""※ مرحباً بك في صانع بوتات تيبثون
 
-⏎ أنشئ بوتك الآن بسهولة 
-اختر القالب، أضف التوكن، وسيكون البوت جاهزاً للعمل 🏪
+⏎ مرحبا بك يا {first_name}
 
 ⏎ المميزات:
-• بدون الحاجة إلى أكواد أو تعقيدات
-• قوالب ذكية وجاهزة
-• استضافة آمنة وفورية
+• مرحباً بك في المنطقة التي لا تعرف المستحيل 🐦‍🔥
+• بوتات ذكيه وسريعه وامنه 
+• قم بانشاء بوتك الخاص الان ✅
 
-※ ابدأ الآن وصمّم بوتك في أقل من نصف دقيقة!"""
-        await query.edit_message_text(text, reply_markup=get_main_menu_keyboard())
+<blockquote>※ يمتيز البوت بالسرعه والاداء الملحوظ قم بالضغط على /start</blockquote>"""
+        await query.edit_message_text(text, reply_markup=get_main_menu_keyboard(), parse_mode="HTML")
         return
 
 async def handle_token(update: Update, context: ContextTypes.DEFAULT_TYPE):
@@ -716,7 +768,7 @@ async def handle_token(update: Update, context: ContextTypes.DEFAULT_TYPE):
         }
         save_bots_data(bots_data)
         
-        bot_type_names = {'ai': 'ذكاء اصطناعي', 'adhkar': 'اذكار', 'guard': 'حماية من التصفية', 'quiz': 'كويز'}
+        bot_type_names = {'ai': 'ذكاء اصطناعي', 'adhkar': 'اذكار', 'guard': 'حماية من التصفية', 'quiz': 'كويز', 'join': 'قبول انضمام'}
         
         if creating_type == 'ai':
             asyncio.create_task(start_ai_bot(token, user_id))
@@ -754,6 +806,16 @@ async def handle_token(update: Update, context: ContextTypes.DEFAULT_TYPE):
 المالك: {first_name}
 
 البوت يعمل الان"""
+        elif creating_type == 'join':
+            asyncio.create_task(start_join_request_bot(token, user_id))
+            text = f"""※ تم انشاء بوت قبول الانضمام بنجاح
+
+البوت: @{bot_username}
+النوع: قبول انضمام
+المالك: {first_name}
+
+البوت يعمل الان
+اضف البوت كأدمن في قناتك او مجموعتك"""
         else:
             text = "نوع البوت غير معروف"
         
@@ -845,6 +907,7 @@ async def developer_panel(update: Update, context: ContextTypes.DEFAULT_TYPE):
         InlineKeyboardButton("حظر مستخدم 🚫", callback_data="dev_ban_user"),
         InlineKeyboardButton("فك حظر ✅", callback_data="dev_unban_user")
     ])
+    keyboard.append([InlineKeyboardButton("اذاعة متقدمة 📢", callback_data="advanced_broadcast")])
     keyboard.append([InlineKeyboardButton("اذاعة للجميع 📢", callback_data="broadcast_all")])
     
     await message.reply_text(text, reply_markup=InlineKeyboardMarkup(keyboard))
@@ -1024,6 +1087,131 @@ async def handle_developer_callback(update: Update, context: ContextTypes.DEFAUL
         await query.edit_message_text(text, reply_markup=InlineKeyboardMarkup(keyboard))
         return True
     
+    if data == "advanced_broadcast":
+        await query.answer()
+        bots_data = get_bots_data()
+        
+        keyboard = []
+        for token, bot_data in bots_data.items():
+            bot_name = bot_data.get('bot_username', 'غير معروف')
+            bot_type_map = {'ai': 'ذكاء', 'adhkar': 'اذكار', 'guard': 'حماية', 'quiz': 'كويز', 'join_request': 'قبول'}
+            bot_type = bot_type_map.get(bot_data.get('type', ''), 'غير معروف')
+            keyboard.append([InlineKeyboardButton(
+                f"📌 @{bot_name} - {bot_type}",
+                callback_data=f"select_bot_{token[:25]}"
+            )])
+        
+        keyboard.append([InlineKeyboardButton("ارسال للمحددين 📢", callback_data="send_selected")])
+        keyboard.append([InlineKeyboardButton("رجوع", callback_data="dev_panel")])
+        
+        user_states[user.id] = {'selected_bots': []}
+        await query.edit_message_text(
+            "※ اذاعة متقدمة\n\nاختر البوتات التي تريد الارسال لمستخدميها:",
+            reply_markup=InlineKeyboardMarkup(keyboard)
+        )
+        return True
+    
+    if data.startswith("select_bot_"):
+        await query.answer()
+        token_prefix = data.replace("select_bot_", "")
+        
+        user_state = user_states.get(user.id, {})
+        selected = user_state.get('selected_bots', [])
+        
+        if token_prefix in selected:
+            selected.remove(token_prefix)
+        else:
+            selected.append(token_prefix)
+        
+        user_states[user.id] = {'selected_bots': selected}
+        
+        bots_data = get_bots_data()
+        keyboard = []
+        for token, bot_data in bots_data.items():
+            bot_name = bot_data.get('bot_username', 'غير معروف')
+            bot_type_map = {'ai': 'ذكاء', 'adhkar': 'اذكار', 'guard': 'حماية', 'quiz': 'كويز', 'join_request': 'قبول'}
+            bot_type = bot_type_map.get(bot_data.get('type', ''), 'غير معروف')
+            is_selected = "✅" if token[:25] in selected else "📌"
+            keyboard.append([InlineKeyboardButton(
+                f"{is_selected} @{bot_name} - {bot_type}",
+                callback_data=f"select_bot_{token[:25]}"
+            )])
+        
+        keyboard.append([InlineKeyboardButton("ارسال للمحددين 📢", callback_data="send_selected")])
+        keyboard.append([InlineKeyboardButton("رجوع", callback_data="dev_panel")])
+        
+        await query.edit_message_text(
+            f"※ اذاعة متقدمة\n\nالمحددين: {len(selected)} بوت",
+            reply_markup=InlineKeyboardMarkup(keyboard)
+        )
+        return True
+    
+    if data == "send_selected":
+        await query.answer()
+        user_state = user_states.get(user.id, {})
+        selected = user_state.get('selected_bots', [])
+        
+        if not selected:
+            await query.answer("اختر بوت واحد على الاقل", show_alert=True)
+            return True
+        
+        user_states[user.id] = {'advanced_broadcasting': True, 'selected_bots': selected}
+        keyboard = [[InlineKeyboardButton("الغاء", callback_data="dev_cancel")]]
+        await query.edit_message_text(
+            f"※ اذاعة متقدمة\n\nسيتم الارسال لمستخدمي {len(selected)} بوت\n\nارسل الرسالة:",
+            reply_markup=InlineKeyboardMarkup(keyboard)
+        )
+        return True
+    
+    if data == "dev_panel":
+        bots_data = get_bots_data()
+        total_bots = len(bots_data)
+        active_bots = sum(1 for b in bots_data.values() if b.get('active', True))
+        member_data = get_member_data()
+        total_users = len(member_data)
+        remember_data = get_remember_data()
+        total_messages = sum(len(msgs) for msgs in remember_data.values())
+        
+        most_active_bot = None
+        max_users = 0
+        for token, bot_data in bots_data.items():
+            users_count = bot_data.get('users_count', 0)
+            if users_count > max_users:
+                max_users = users_count
+                most_active_bot = bot_data.get('bot_username', 'غير معروف')
+        
+        text = f"""※ لوحة تحكم المطور
+
+📊 الإحصائيات:
+⏎ عدد البوتات: {total_bots}
+⏎ البوتات النشطة: {active_bots}
+⏎ عدد المستخدمين: {total_users}
+⏎ عدد الرسائل: {total_messages}
+⏎ أكثر بوت نشاط: @{most_active_bot or 'لا يوجد'}
+
+قائمة البوتات:"""
+        
+        keyboard = []
+        for token, bot_data in bots_data.items():
+            status = "🟢" if bot_data.get('active', True) else "🔴"
+            bot_name = bot_data.get('bot_username', 'غير معروف')
+            bot_type_map = {'ai': 'ذكاء', 'adhkar': 'اذكار', 'guard': 'حماية', 'quiz': 'كويز', 'join_request': 'قبول'}
+            bot_type = bot_type_map.get(bot_data.get('type', ''), 'غير معروف')
+            keyboard.append([InlineKeyboardButton(
+                f"{status} @{bot_name} - {bot_type}",
+                callback_data=f"toggle_{token[:30]}"
+            )])
+        
+        keyboard.append([
+            InlineKeyboardButton("حظر مستخدم 🚫", callback_data="dev_ban_user"),
+            InlineKeyboardButton("فك حظر ✅", callback_data="dev_unban_user")
+        ])
+        keyboard.append([InlineKeyboardButton("اذاعة متقدمة 📢", callback_data="advanced_broadcast")])
+        keyboard.append([InlineKeyboardButton("اذاعة للجميع 📢", callback_data="broadcast_all")])
+        
+        await query.edit_message_text(text, reply_markup=InlineKeyboardMarkup(keyboard))
+        return True
+    
     if data == "broadcast_all":
         await query.answer()
         user_states[user.id] = {'dev_broadcasting': True}
@@ -1088,6 +1276,29 @@ async def handle_developer_message(update: Update, context: ContextTypes.DEFAULT
             except:
                 failed += 1
         await message.reply_text(f"✅ تم الإرسال\nنجح: {success}\nفشل: {failed}")
+        user_states.pop(user.id, None)
+        return True
+    
+    if user_state.get('advanced_broadcasting'):
+        selected_bots = user_state.get('selected_bots', [])
+        bots_data = get_bots_data()
+        
+        all_users = set()
+        for token, bot_data in bots_data.items():
+            if token[:25] in selected_bots:
+                bot_users = bot_data.get('users', [])
+                if isinstance(bot_users, list):
+                    all_users.update(bot_users)
+        
+        success = 0
+        failed = 0
+        for uid in all_users:
+            try:
+                await context.bot.send_message(chat_id=int(uid), text=message.text)
+                success += 1
+            except:
+                failed += 1
+        await message.reply_text(f"✅ تم الإرسال للبوتات المحددة\nنجح: {success}\nفشل: {failed}")
         user_states.pop(user.id, None)
         return True
     
@@ -2432,13 +2643,23 @@ async def start_adhkar_bot(token: str, owner_id: int):
                 return
             first_name = user.first_name or "صديقي"
             
+            bots_data = get_bots_data()
+            bot_data = bots_data.get(token, {})
+            owner_name = bot_data.get('owner_name', first_name)
+            
             keyboard = [
                 [
                     InlineKeyboardButton("اعدادات قناتك", callback_data="channel_settings"),
                     InlineKeyboardButton("اعدادات مجموعتك", callback_data="group_settings")
                 ],
+                [InlineKeyboardButton("مواعيد الصلاة 🕌", callback_data="prayer_settings")],
                 [InlineKeyboardButton("اضف البوت الى مجموعتك 🎖️", callback_data="add_info")]
             ]
+            
+            if user.id == owner_id:
+                keyboard.append([
+                    InlineKeyboardButton("لوحة الادمن 🎖️", callback_data="adhkar_admin")
+                ])
             
             text = f"""※ ياهلا وسهلا يا {first_name} في بوت أذكاري 📿
 
@@ -2450,7 +2671,7 @@ async def start_adhkar_bot(token: str, owner_id: int):
 
 ⏎ يعمل تلقائيًا داخل المجموعات والقنوات، ويُرسل المحتوى بشكل منظم علي حسب الإعدادات .
 
-※ للإعدادات والتحكم الكامل، استخدم الأزرار بالأسفل"""
+※ المطور: {owner_name}"""
             
             await message.reply_text(text, reply_markup=InlineKeyboardMarkup(keyboard))
         
@@ -2550,16 +2771,160 @@ async def start_adhkar_bot(token: str, owner_id: int):
                 await query.edit_message_text(text, reply_markup=InlineKeyboardMarkup(keyboard))
                 return
             
+            if data == "adhkar_admin":
+                if user.id != owner_id:
+                    await query.answer("للمالك فقط", show_alert=True)
+                    return
+                
+                schedules_data = get_schedules_data()
+                active_schedules = sum(1 for k in schedules_data.keys() if k.startswith(f"adhkar_{token[:10]}"))
+                
+                text = f"""※ لوحة تحكم الادمن
+
+⏎ الجداول النشطة: {active_schedules}
+
+اختر من القائمة:"""
+                
+                keyboard = [
+                    [
+                        InlineKeyboardButton("الاحصائيات 📊", callback_data="adhkar_stats"),
+                        InlineKeyboardButton("اذاعة 📢", callback_data="adhkar_broadcast")
+                    ],
+                    [
+                        InlineKeyboardButton("حظر مستخدم ❌", callback_data="adhkar_ban"),
+                        InlineKeyboardButton("فك حظر ✅", callback_data="adhkar_unban")
+                    ],
+                    [InlineKeyboardButton("رجوع", callback_data="back_adhkar")]
+                ]
+                await query.edit_message_text(text, reply_markup=InlineKeyboardMarkup(keyboard))
+                return
+            
+            if data == "adhkar_stats":
+                if user.id != owner_id:
+                    await query.answer("للمالك فقط", show_alert=True)
+                    return
+                
+                schedules_data = get_schedules_data()
+                active_schedules = [(k, v) for k, v in schedules_data.items() if k.startswith(f"adhkar_{token[:10]}")]
+                
+                text = f"""※ احصائيات البوت
+
+⏎ عدد الجداول النشطة: {len(active_schedules)}"""
+                
+                for job_id, schedule in active_schedules[:5]:
+                    interval = schedule.get('interval', 0)
+                    chat_id = schedule.get('chat_id', 'غير معروف')
+                    text += f"\n• محادثة {chat_id}: كل {interval} دقيقة"
+                
+                keyboard = [[InlineKeyboardButton("رجوع", callback_data="adhkar_admin")]]
+                await query.edit_message_text(text, reply_markup=InlineKeyboardMarkup(keyboard))
+                return
+            
+            if data == "adhkar_broadcast":
+                if user.id != owner_id:
+                    await query.answer("للمالك فقط", show_alert=True)
+                    return
+                adhkar_user_states[user.id] = {'broadcasting': True}
+                keyboard = [[InlineKeyboardButton("الغاء", callback_data="adhkar_admin")]]
+                await query.edit_message_text(
+                    "※ اذاعة\n\nارسل الرسالة التي تريد ارسالها لجميع القنوات والمجموعات:",
+                    reply_markup=InlineKeyboardMarkup(keyboard)
+                )
+                return
+            
+            if data == "adhkar_ban":
+                if user.id != owner_id:
+                    await query.answer("للمالك فقط", show_alert=True)
+                    return
+                adhkar_user_states[user.id] = {'banning': True}
+                keyboard = [[InlineKeyboardButton("الغاء", callback_data="adhkar_admin")]]
+                await query.edit_message_text(
+                    "※ حظر مستخدم\n\nارسل ايدي المستخدم الذي تريد حظره:",
+                    reply_markup=InlineKeyboardMarkup(keyboard)
+                )
+                return
+            
+            if data == "adhkar_unban":
+                if user.id != owner_id:
+                    await query.answer("للمالك فقط", show_alert=True)
+                    return
+                adhkar_user_states[user.id] = {'unbanning': True}
+                keyboard = [[InlineKeyboardButton("الغاء", callback_data="adhkar_admin")]]
+                await query.edit_message_text(
+                    "※ فك حظر\n\nارسل ايدي المستخدم الذي تريد فك حظره:",
+                    reply_markup=InlineKeyboardMarkup(keyboard)
+                )
+                return
+            
+            if data == "prayer_settings":
+                text = """※ مواعيد الصلاة 🕌
+
+اختر المحافظة لتفعيل تنبيهات الصلاة:"""
+                
+                keyboard = [
+                    [
+                        InlineKeyboardButton("القاهره", callback_data="prayer_cairo"),
+                        InlineKeyboardButton("بورسعيد", callback_data="prayer_portsaid")
+                    ],
+                    [
+                        InlineKeyboardButton("اسكندريه", callback_data="prayer_alex"),
+                        InlineKeyboardButton("دمياط", callback_data="prayer_damietta")
+                    ],
+                    [
+                        InlineKeyboardButton("الجيزه", callback_data="prayer_giza"),
+                        InlineKeyboardButton("الشرقيه", callback_data="prayer_sharqia")
+                    ],
+                    [InlineKeyboardButton("رجوع", callback_data="back_adhkar")]
+                ]
+                await query.edit_message_text(text, reply_markup=InlineKeyboardMarkup(keyboard))
+                return
+            
+            if data.startswith("prayer_"):
+                city = data.replace("prayer_", "")
+                city_names = {
+                    'cairo': 'القاهره',
+                    'portsaid': 'بورسعيد',
+                    'alex': 'الاسكندريه',
+                    'damietta': 'دمياط',
+                    'giza': 'الجيزه',
+                    'sharqia': 'الشرقيه'
+                }
+                city_name = city_names.get(city, 'القاهره')
+                
+                adhkar_user_states[user.id] = {'setting_prayer': True, 'city': city, 'city_name': city_name}
+                
+                text = f"""※ تفعيل مواعيد الصلاة
+
+المحافظة: {city_name}
+
+ارسل ايدي القناة او المجموعة لتفعيل التنبيهات فيها"""
+                
+                keyboard = [[InlineKeyboardButton("رجوع", callback_data="prayer_settings")]]
+                await query.edit_message_text(text, reply_markup=InlineKeyboardMarkup(keyboard))
+                return
+            
             if data == "back_adhkar":
                 adhkar_user_states.pop(user.id, None)
                 first_name = user.first_name or "صديقي"
+                
+                bots_data = get_bots_data()
+                bot_data = bots_data.get(token, {})
+                owner_name = bot_data.get('owner_name', first_name)
+                
                 keyboard = [
                     [
                         InlineKeyboardButton("اعدادات قناتك", callback_data="channel_settings"),
                         InlineKeyboardButton("اعدادات مجموعتك", callback_data="group_settings")
                     ],
+                    [InlineKeyboardButton("مواعيد الصلاة 🕌", callback_data="prayer_settings")],
                     [InlineKeyboardButton("اضف البوت الى مجموعتك 🎖️", callback_data="add_info")]
                 ]
+                
+                if user.id == owner_id:
+                    keyboard.append([
+                        InlineKeyboardButton("لوحة الادمن 🎖️", callback_data="adhkar_admin")
+                    ])
+                
                 text = f"""※ ياهلا وسهلا يا {first_name} في بوت أذكاري 📿
 
 ⏎ بوت مخصص لنشر :
@@ -2570,7 +2935,7 @@ async def start_adhkar_bot(token: str, owner_id: int):
 
 ⏎ يعمل تلقائيًا داخل المجموعات والقنوات، ويُرسل المحتوى بشكل منظم علي حسب الإعدادات .
 
-※ للإعدادات والتحكم الكامل، استخدم الأزرار بالأسفل"""
+※ المطور: {owner_name}"""
                 await query.edit_message_text(text, reply_markup=InlineKeyboardMarkup(keyboard))
                 return
             
@@ -2650,6 +3015,97 @@ async def start_adhkar_bot(token: str, owner_id: int):
                 return
             
             user_state = adhkar_user_states.get(user.id, {})
+            message_text = message.text or ""
+            
+            if user_state.get('broadcasting') and user.id == owner_id:
+                schedules_data = get_schedules_data()
+                chats = [v['chat_id'] for k, v in schedules_data.items() if k.startswith(f"adhkar_{token[:10]}")]
+                
+                success = 0
+                failed = 0
+                for chat_id in set(chats):
+                    try:
+                        await context.bot.send_message(chat_id=chat_id, text=message_text)
+                        success += 1
+                    except:
+                        failed += 1
+                
+                await message.reply_text(f"✅ تم الارسال\nنجح: {success}\nفشل: {failed}")
+                adhkar_user_states.pop(user.id, None)
+                return
+            
+            if user_state.get('banning') and user.id == owner_id:
+                try:
+                    ban_id = int(message_text.strip())
+                    bots_data = get_bots_data()
+                    if token in bots_data:
+                        if 'banned_users' not in bots_data[token]:
+                            bots_data[token]['banned_users'] = []
+                        if ban_id not in bots_data[token]['banned_users']:
+                            bots_data[token]['banned_users'].append(ban_id)
+                            save_bots_data(bots_data)
+                            await message.reply_text(f"✅ تم حظر المستخدم {ban_id}")
+                        else:
+                            await message.reply_text("المستخدم محظور بالفعل")
+                except:
+                    await message.reply_text("ارسل ايدي صحيح")
+                adhkar_user_states.pop(user.id, None)
+                return
+            
+            if user_state.get('unbanning') and user.id == owner_id:
+                try:
+                    unban_id = int(message_text.strip())
+                    bots_data = get_bots_data()
+                    if token in bots_data and 'banned_users' in bots_data[token]:
+                        if unban_id in bots_data[token]['banned_users']:
+                            bots_data[token]['banned_users'].remove(unban_id)
+                            save_bots_data(bots_data)
+                            await message.reply_text(f"✅ تم فك حظر المستخدم {unban_id}")
+                        else:
+                            await message.reply_text("المستخدم غير محظور")
+                    else:
+                        await message.reply_text("لا يوجد مستخدمين محظورين")
+                except:
+                    await message.reply_text("ارسل ايدي صحيح")
+                adhkar_user_states.pop(user.id, None)
+                return
+            
+            if user_state.get('setting_prayer'):
+                try:
+                    prayer_chat_id = int(message_text.strip())
+                    city = user_state.get('city', 'cairo')
+                    city_name = user_state.get('city_name', 'القاهره')
+                    
+                    try:
+                        chat = await context.bot.get_chat(prayer_chat_id)
+                        chat_title = chat.title or "غير معروف"
+                    except:
+                        await message.reply_text("تأكد ان البوت مضاف للقناة/المجموعة كمشرف")
+                        return
+                    
+                    bots_data = get_bots_data()
+                    if token in bots_data:
+                        if 'prayer_chats' not in bots_data[token]:
+                            bots_data[token]['prayer_chats'] = {}
+                        bots_data[token]['prayer_chats'][str(prayer_chat_id)] = {
+                            'city': city,
+                            'city_name': city_name,
+                            'title': chat_title
+                        }
+                        save_bots_data(bots_data)
+                    
+                    await message.reply_text(f"""✅ تم تفعيل مواعيد الصلاة
+
+المحافظة: {city_name}
+المحادثة: {chat_title}
+
+سيتم ارسال تنبيهات الصلاة تلقائياً""")
+                    adhkar_user_states.pop(user.id, None)
+                    return
+                except:
+                    await message.reply_text("ارسل ايدي صحيح")
+                    return
+            
             if not user_state.get('setting_type'):
                 return
             
@@ -3292,6 +3748,272 @@ async def start_quiz_bot(token: str, owner_id: int):
     except Exception as e:
         logger.error(f"Error starting Quiz bot: {e}")
 
+async def start_join_request_bot(token: str, owner_id: int):
+    try:
+        app = Application.builder().token(token).build()
+        join_user_states = {}
+        join_stats = {'accepted': 0, 'channels': [], 'groups': []}
+        
+        async def join_start(update: Update, context: ContextTypes.DEFAULT_TYPE):
+            user = update.effective_user
+            message = update.message
+            if user is None or message is None:
+                return
+            first_name = user.first_name or "صديقي"
+            
+            bots_data = get_bots_data()
+            bot_data = bots_data.get(token, {})
+            owner_name = bot_data.get('owner_name', first_name)
+            
+            if user.id == owner_id:
+                keyboard = [
+                    [
+                        InlineKeyboardButton("الاحصائيات 📊", callback_data="join_stats"),
+                        InlineKeyboardButton("لوحة الادمن 🎖️", callback_data="join_admin")
+                    ],
+                    [
+                        InlineKeyboardButton("القنوات والمجموعات", callback_data="join_chats")
+                    ]
+                ]
+                
+                text = f"""※ بوت قبول الانضمام
+
+⏎ مرحبا بك يا {first_name}
+⏎ هذا البوت يقبل طلبات الانضمام تلقائياً
+⏎ اضف البوت كأدمن في قناتك او مجموعتك
+⏎ المطور: {owner_name}"""
+            else:
+                keyboard = []
+                text = f"""※ بوت قبول الانضمام
+
+⏎ مرحبا بك يا {first_name}
+⏎ هذا البوت يقبل طلبات الانضمام تلقائياً
+⏎ المطور: {owner_name}"""
+            
+            await message.reply_text(text, reply_markup=InlineKeyboardMarkup(keyboard) if keyboard else None)
+        
+        async def join_callback(update: Update, context: ContextTypes.DEFAULT_TYPE):
+            query = update.callback_query
+            if query is None:
+                return
+            await query.answer()
+            user = query.from_user
+            if user is None:
+                return
+            data = query.data
+            first_name = user.first_name or "صديقي"
+            
+            if data == "join_stats":
+                if user.id != owner_id:
+                    await query.answer("للمالك فقط", show_alert=True)
+                    return
+                
+                bots_data = get_bots_data()
+                bot_data = bots_data.get(token, {})
+                accepted = bot_data.get('accepted_requests', 0)
+                channels_count = len(bot_data.get('channels', []))
+                groups_count = len(bot_data.get('groups', []))
+                
+                text = f"""※ احصائيات البوت
+
+⏎ طلبات مقبولة: {accepted}
+⏎ عدد القنوات: {channels_count}
+⏎ عدد المجموعات: {groups_count}"""
+                
+                keyboard = [[InlineKeyboardButton("رجوع", callback_data="join_back")]]
+                await query.edit_message_text(text, reply_markup=InlineKeyboardMarkup(keyboard))
+                return
+            
+            if data == "join_admin":
+                if user.id != owner_id:
+                    await query.answer("للمالك فقط", show_alert=True)
+                    return
+                
+                keyboard = [
+                    [InlineKeyboardButton("اذاعة للمستخدمين 📢", callback_data="join_broadcast")],
+                    [InlineKeyboardButton("رجوع", callback_data="join_back")]
+                ]
+                await query.edit_message_text(
+                    "※ لوحة الادمن\n\nاختر من القائمة",
+                    reply_markup=InlineKeyboardMarkup(keyboard)
+                )
+                return
+            
+            if data == "join_broadcast":
+                if user.id != owner_id:
+                    await query.answer("للمالك فقط", show_alert=True)
+                    return
+                join_user_states[user.id] = {'broadcasting': True}
+                keyboard = [[InlineKeyboardButton("الغاء", callback_data="join_back")]]
+                await query.edit_message_text(
+                    "※ اذاعة\n\nارسل الرسالة التي تريد ارسالها:",
+                    reply_markup=InlineKeyboardMarkup(keyboard)
+                )
+                return
+            
+            if data == "join_chats":
+                if user.id != owner_id:
+                    await query.answer("للمالك فقط", show_alert=True)
+                    return
+                
+                bots_data = get_bots_data()
+                bot_data = bots_data.get(token, {})
+                channels = bot_data.get('channels', [])
+                groups = bot_data.get('groups', [])
+                
+                text = "※ القنوات والمجموعات المتصلة\n\n"
+                if channels:
+                    text += "⏎ القنوات:\n"
+                    for ch in channels[:10]:
+                        text += f"• {ch}\n"
+                if groups:
+                    text += "\n⏎ المجموعات:\n"
+                    for gr in groups[:10]:
+                        text += f"• {gr}\n"
+                if not channels and not groups:
+                    text += "لا يوجد قنوات او مجموعات متصلة بعد"
+                
+                keyboard = [[InlineKeyboardButton("رجوع", callback_data="join_back")]]
+                await query.edit_message_text(text, reply_markup=InlineKeyboardMarkup(keyboard))
+                return
+            
+            if data == "join_back":
+                join_user_states.pop(user.id, None)
+                bots_data = get_bots_data()
+                bot_data = bots_data.get(token, {})
+                owner_name = bot_data.get('owner_name', first_name)
+                
+                if user.id == owner_id:
+                    keyboard = [
+                        [
+                            InlineKeyboardButton("الاحصائيات 📊", callback_data="join_stats"),
+                            InlineKeyboardButton("لوحة الادمن 🎖️", callback_data="join_admin")
+                        ],
+                        [
+                            InlineKeyboardButton("القنوات والمجموعات", callback_data="join_chats")
+                        ]
+                    ]
+                    
+                    text = f"""※ بوت قبول الانضمام
+
+⏎ مرحبا بك يا {first_name}
+⏎ هذا البوت يقبل طلبات الانضمام تلقائياً
+⏎ اضف البوت كأدمن في قناتك او مجموعتك
+⏎ المطور: {owner_name}"""
+                else:
+                    keyboard = []
+                    text = f"""※ بوت قبول الانضمام
+
+⏎ مرحبا بك يا {first_name}
+⏎ هذا البوت يقبل طلبات الانضمام تلقائياً
+⏎ المطور: {owner_name}"""
+                
+                await query.edit_message_text(text, reply_markup=InlineKeyboardMarkup(keyboard) if keyboard else None)
+                return
+        
+        async def join_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
+            message = update.message
+            if message is None:
+                return
+            user = message.from_user
+            if user is None:
+                return
+            
+            user_state = join_user_states.get(user.id, {})
+            
+            if user_state.get('broadcasting') and user.id == owner_id:
+                bots_data = get_bots_data()
+                bot_data = bots_data.get(token, {})
+                channels = bot_data.get('channels', [])
+                groups = bot_data.get('groups', [])
+                
+                success = 0
+                failed = 0
+                for chat_id in channels + groups:
+                    try:
+                        await context.bot.send_message(chat_id=chat_id, text=message.text)
+                        success += 1
+                    except:
+                        failed += 1
+                
+                await message.reply_text(f"✅ تم الارسال\nنجح: {success}\nفشل: {failed}")
+                join_user_states.pop(user.id, None)
+                return
+        
+        async def handle_join_request(update: Update, context: ContextTypes.DEFAULT_TYPE):
+            join_request = update.chat_join_request
+            if join_request is None:
+                return
+            
+            try:
+                await join_request.approve()
+                
+                bots_data = get_bots_data()
+                if token in bots_data:
+                    bots_data[token]['accepted_requests'] = bots_data[token].get('accepted_requests', 0) + 1
+                    save_bots_data(bots_data)
+                
+                logger.info(f"Approved join request from {join_request.from_user.id} in {join_request.chat.title}")
+            except Exception as e:
+                logger.error(f"Error approving join request: {e}")
+        
+        async def handle_my_chat_member(update: Update, context: ContextTypes.DEFAULT_TYPE):
+            my_chat_member = update.my_chat_member
+            if my_chat_member is None:
+                return
+            
+            chat = my_chat_member.chat
+            new_status = my_chat_member.new_chat_member.status
+            
+            bots_data = get_bots_data()
+            if token not in bots_data:
+                return
+            
+            if new_status == 'administrator':
+                if chat.type == 'channel':
+                    if 'channels' not in bots_data[token]:
+                        bots_data[token]['channels'] = []
+                    if str(chat.id) not in bots_data[token]['channels']:
+                        bots_data[token]['channels'].append(str(chat.id))
+                elif chat.type in ['group', 'supergroup']:
+                    if 'groups' not in bots_data[token]:
+                        bots_data[token]['groups'] = []
+                    if str(chat.id) not in bots_data[token]['groups']:
+                        bots_data[token]['groups'].append(str(chat.id))
+                save_bots_data(bots_data)
+                
+                try:
+                    await context.bot.send_message(
+                        chat_id=chat.id,
+                        text="※ تم تفعيل البوت بنجاح\n\nسأقوم بقبول طلبات الانضمام تلقائياً 🚀"
+                    )
+                except:
+                    pass
+            elif new_status in ['left', 'kicked']:
+                if str(chat.id) in bots_data[token].get('channels', []):
+                    bots_data[token]['channels'].remove(str(chat.id))
+                if str(chat.id) in bots_data[token].get('groups', []):
+                    bots_data[token]['groups'].remove(str(chat.id))
+                save_bots_data(bots_data)
+        
+        from telegram.ext import ChatJoinRequestHandler, ChatMemberHandler
+        
+        app.add_handler(CommandHandler('start', join_start))
+        app.add_handler(CallbackQueryHandler(join_callback))
+        app.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, join_message))
+        app.add_handler(ChatJoinRequestHandler(handle_join_request))
+        app.add_handler(ChatMemberHandler(handle_my_chat_member, ChatMemberHandler.MY_CHAT_MEMBER))
+        
+        await app.initialize()
+        await app.start()
+        await app.updater.start_polling(drop_pending_updates=True, allowed_updates=Update.ALL_TYPES)
+        
+        running_bot_apps[token] = app
+        logger.info(f"Join Request Bot started successfully")
+        
+    except Exception as e:
+        logger.error(f"Error starting Join Request bot: {e}")
+
 async def restore_bots():
     bots_data = get_bots_data()
     for token, bot_data in bots_data.items():
@@ -3308,6 +4030,8 @@ async def restore_bots():
                 asyncio.create_task(start_guard_bot(token, owner_id))
             elif bot_type == 'quiz':
                 asyncio.create_task(start_quiz_bot(token, owner_id))
+            elif bot_type == 'join':
+                asyncio.create_task(start_join_request_bot(token, owner_id))
             logger.info(f"Restored bot: {bot_data.get('bot_username')}")
         except Exception as e:
             logger.error(f"Error restoring bot: {e}")
@@ -3351,6 +4075,14 @@ async def inline_query(update: Update, context: ContextTypes.DEFAULT_TYPE):
             id=str(uuid.uuid4()),
             title="انشاء بوت كويز",
             description="اسئلة ثقافية مع نظام نقاط ومتصدرين",
+            input_message_content=InputTextMessageContent(
+                f"※ مصنع البوتات\n\nابدأ الان وانشئ بوتك الخاص\n@{bot_me.username}"
+            )
+        ),
+        InlineQueryResultArticle(
+            id=str(uuid.uuid4()),
+            title="انشاء بوت قبول انضمام",
+            description="قبول طلبات الانضمام تلقائياً",
             input_message_content=InputTextMessageContent(
                 f"※ مصنع البوتات\n\nابدأ الان وانشئ بوتك الخاص\n@{bot_me.username}"
             )

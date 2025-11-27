@@ -3,3 +3,9 @@ groq==0.36.0
 flask==3.1.2
 aiohttp==3.13.2
 apscheduler==3.11.1
+aiohttp
+apscheduler
+flask
+groq
+python-telegram-bot
+telegram
