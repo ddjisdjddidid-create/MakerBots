@@ -13,7 +13,7 @@ services:
       # متغير للتعرف على بيئة Render
       - key: RENDER
         value: "true"
-        sync: false
+        sync: true
       
       # حط مفتاح Groq API هنا - من console.groq.com
       - key: GROQ_API_KEY
